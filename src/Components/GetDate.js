@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 function GetDate() {
 	const [timeKey, setTK] = useState(new Date());
-	//const [currentHour, setCurrentHour] = useState(timeKey.getSeconds());
 
-	//console.log(currentTime);
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setTK((timeKey) => new Date());
