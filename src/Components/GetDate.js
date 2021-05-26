@@ -10,7 +10,7 @@ function GetDate() {
 		return () => clearInterval(interval);
 	}, []);
 	const Day = timeKey.getDate();
-	const Month = timeKey.getMonth();
+	const Month = timeKey.getMonth() + 1;
 	const Year = timeKey.getFullYear();
 
 	return (

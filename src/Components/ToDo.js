@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-function Timer() {
+function ToDo() {
 	return (
 		<div>
-			<p>I'm a Timer Component</p>
+			<p>I'm a ToDo Component</p>
 		</div>
 	);
 }
 
-export default Timer;
+export default ToDo;
