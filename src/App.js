@@ -22,10 +22,10 @@ function App() {
 				</Row>
 				<Row>
 					<Col>
-						<Timer />
+						<ToDo />
 					</Col>
 					<Col>
-						<ToDo />
+						<Timer />
 					</Col>
 				</Row>
 			</Container>
