@@ -16,7 +16,7 @@ function GetDate() {
 	return (
 		<div>
 			<p>
-				Date: {Day}-{Month}-{Year}
+				Date: {Month}-{Day}-{Year}
 			</p>
 		</div>
 	);
