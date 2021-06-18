@@ -2,9 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import { useHotkeys } from 'react-hotkeys-hook';
+import Table from 'react-bootstrap/Table';
 
 function ToDo() {
 	var [thingsToDo, setThingsToDo] = useLocalStorage('todoList', []);
@@ -13,9 +11,9 @@ function ToDo() {
 		if (localStorage.getItem('todoList') === null) {
 			var createdOn = new Date().toISOString();
 			var initializeList = {
-				key: 0,
+				id: 1,
 				todo: 'Nothing to do!',
-				created: createdOn,
+				created_on: createdOn,
 				status: 'scheduled',
 			};
 			localStorage.setItem('todoList', JSON.stringify(initializeList));
@@ -27,6 +25,7 @@ function ToDo() {
 		}
 	});
 
+	//Thanks to https://usehooks.com/useLocalStorage/
 	function useLocalStorage(key, initialValue) {
 		// State to store our value
 		// Pass initial state function to useState so logic is only executed once
@@ -70,12 +69,12 @@ function ToDo() {
 			console.log(parsedRetrievedToDos);
 			var createdOn = new Date().toISOString();
 			console.log(createdOn);
-			var keyGen = parsedRetrievedToDos.length;
+			var keyGen = parsedRetrievedToDos.length + 1;
 			console.log(keyGen);
 			//Update to source item from Entry Form as the item. Also clear the entry form.
 			const newItem = {
-				key: keyGen,
-				item: inputEl.current.value,
+				id: keyGen,
+				todo: inputEl.current.value,
 				created_on: createdOn,
 				status: 'working',
 			};
@@ -97,12 +96,12 @@ function ToDo() {
 			console.log(parsedRetrievedToDos);
 			var createdOn = new Date().toISOString();
 			console.log(createdOn);
-			var keyGen = parsedRetrievedToDos.length;
+			var keyGen = parsedRetrievedToDos.length + 1;
 			console.log(keyGen);
 			//Update to source item from Entry Form as the item. Also clear the entry form.
 			const newItem = {
-				key: keyGen,
-				item: inputEl.current.value,
+				id: keyGen,
+				todo: inputEl.current.value,
 				created_on: createdOn,
 				status: 'scheduled',
 			};
@@ -115,32 +114,33 @@ function ToDo() {
 		}
 	}
 
-	//Need to fix HotKeys
-	/* const renderStartTooltip = (props) => (
-		<Tooltip id="button-tooltip" {...props}>
-			Command+Enter
-		</Tooltip>
-	);
-
-	const renderScheduleTooltip = (props) => (
-		<Tooltip id="button-tooltip" {...props}>
-			Shift+Enter
-		</Tooltip>
-	);
-
-	useHotkeys('Shift+Enter', () => scheduleForLater(), {
-		enableOnTags: 'INPUT',
-	});
-
-	useHotkeys('Command+Enter', () => timerStart(), {
-		enableOnTags: 'INPUT',
-	}); */
-
 	const inputEl = useRef(null);
+
+	function removeTask(taskIdentifier) {
+		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
+		console.log(newTaskList);
+		var toCheck = taskIdentifier;
+		console.log(toCheck);
+
+		var keyOfTask = newTaskList.findIndex(function (task) {
+			return task.created_on === toCheck;
+		});
+		console.log(keyOfTask);
+
+		if (keyOfTask > -1) {
+			newTaskList.splice(keyOfTask, 1);
+		}
+		console.log(newTaskList);
+		setThingsToDo(newTaskList);
+		const freshretrievedToDos = localStorage.getItem('todoList');
+		var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
+		console.log(freshparsedRetrievedToDos);
+		inputEl.current.focus();
+		inputEl.current.value = '';
+	}
 
 	return (
 		<div>
-			<p>I'm a ToDo Component</p>
 			<InputGroup>
 				<FormControl
 					ref={inputEl}
@@ -150,27 +150,51 @@ function ToDo() {
 					autoFocus={true}
 				/>
 				<InputGroup.Append>
-					{/* <OverlayTrigger
-						placement="bottom"
-						delay={{ show: 50, hide: 5 }}
-						overlay={renderStartTooltip}
-					> */}
 					<Button variant="outline-secondary" onClick={timerStart}>
 						Start
 					</Button>
-					{/* 	</OverlayTrigger> */}
 
-					{/* <OverlayTrigger
-						placement="bottom"
-						delay={{ show: 50, hide: 5 }}
-						overlay={renderScheduleTooltip}
-					> */}
 					<Button variant="outline-secondary" onClick={scheduleForLater}>
 						Schedule
 					</Button>
-					{/* </OverlayTrigger> */}
 				</InputGroup.Append>
 			</InputGroup>
+			<div key="toDoList">
+				{thingsToDo.length === 1 && <p>Looks like you've got nothing ToDo!</p>}
+				<Table bordered striped size="sm" variant="dark">
+					{thingsToDo
+						.map((todo) => (
+							<tbody>
+								<tr>
+									<td>{todo.todo}</td>
+									<td>
+										<InputGroup>
+											<InputGroup.Prepend>
+												<Button
+													variant="success"
+													sz="sm"
+													value={todo.created_on}
+													onClick={() => console.log(todo.created_on)}
+												>
+													Start
+												</Button>
+											</InputGroup.Prepend>
+											<InputGroup.Append>
+												<Button
+													variant="danger"
+													onClick={() => removeTask(todo.created_on)}
+												>
+													Remove
+												</Button>
+											</InputGroup.Append>
+										</InputGroup>
+									</td>
+								</tr>
+							</tbody>
+						))
+						.slice(1)}
+				</Table>
+			</div>
 		</div>
 	);
 }

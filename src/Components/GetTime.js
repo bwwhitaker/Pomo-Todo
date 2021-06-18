@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 function GetTime() {
-	const [timeKey, setTK] = useState(new Date());
+	const [timeKey, setTimeKey] = useState(new Date());
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setTK((timeKey) => new Date());
-		}, 500);
+			setTimeKey((timeKey) => new Date());
+		}, 100);
 		return () => clearInterval(interval);
 	}, []);
 
