@@ -118,23 +118,13 @@ function ToDo() {
 
 	function removeTask(taskIdentifier) {
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
-		console.log(newTaskList);
-		var toCheck = taskIdentifier;
-		console.log(toCheck);
-
 		var keyOfTask = newTaskList.findIndex(function (task) {
-			return task.created_on === toCheck;
+			return task.created_on === taskIdentifier;
 		});
-		console.log(keyOfTask);
-
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		console.log(newTaskList);
 		setThingsToDo(newTaskList);
-		const freshretrievedToDos = localStorage.getItem('todoList');
-		var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
-		console.log(freshparsedRetrievedToDos);
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
