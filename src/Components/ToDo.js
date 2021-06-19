@@ -5,7 +5,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 
 function ToDo() {
-	var [thingsToDo, setThingsToDo] = useLocalStorage('todoList', []);
+	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
+	var [currentTask, setCurrentTask] = useLocalStorage('currentTask', '');
 
 	useEffect(() => {
 		if (localStorage.getItem('todoList') === null) {
@@ -20,8 +21,8 @@ function ToDo() {
 			var retrievedData = localStorage.getItem('todoList');
 			var todos = JSON.parse(retrievedData);
 			console.log(todos);
-			setThingsToDo([(thingsToDo = todos)]);
-			console.log(thingsToDo);
+			setTasksToDo([(tasksToDo = todos)]);
+			console.log(tasksToDo);
 		}
 	});
 
@@ -78,7 +79,7 @@ function ToDo() {
 				created_on: createdOn,
 				status: 'working',
 			};
-			setThingsToDo([...thingsToDo, newItem]);
+			setTasksToDo([...tasksToDo, newItem]);
 			const freshretrievedToDos = localStorage.getItem('todoList');
 			var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
 			console.log(freshparsedRetrievedToDos);
@@ -105,7 +106,7 @@ function ToDo() {
 				created_on: createdOn,
 				status: 'scheduled',
 			};
-			setThingsToDo([...thingsToDo, newItem]);
+			setTasksToDo([...tasksToDo, newItem]);
 			const freshretrievedToDos = localStorage.getItem('todoList');
 			var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
 			console.log(freshparsedRetrievedToDos);
@@ -124,7 +125,7 @@ function ToDo() {
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		setThingsToDo(newTaskList);
+		setTasksToDo(newTaskList);
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
@@ -150,9 +151,9 @@ function ToDo() {
 				</InputGroup.Append>
 			</InputGroup>
 			<div key="toDoList">
-				{thingsToDo.length === 1 && <p>Looks like you've got nothing ToDo!</p>}
+				{tasksToDo.length === 1 && <p>Looks like you've got nothing ToDo!</p>}
 				<Table bordered striped size="sm" variant="dark">
-					{thingsToDo
+					{tasksToDo
 						.map((todo) => (
 							<tbody>
 								<tr>
