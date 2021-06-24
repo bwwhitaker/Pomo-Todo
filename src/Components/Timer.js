@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
 
 function Timer() {
 	const [timerValue, setTimerValue] = useState(0);
@@ -36,7 +37,7 @@ function Timer() {
 		(timerValue - minutes * 60000 - seconds * 1000) / 100
 	);
 	var formattedTime = '';
-	formattedTime += (minutes < 10 ? '0' : '') + minutes;
+	formattedTime += minutes;
 	formattedTime += (seconds < 10 ? ':0' : ':') + seconds;
 	formattedTime += '.' + tenthsOfSeconds;
 
@@ -58,8 +59,6 @@ function Timer() {
 
 	return (
 		<div>
-			<p>{formattedTime}</p>
-
 			<InputGroup>
 				<InputGroup.Prepend>
 					<Button onClick={timerStartWork} variant="success" sz="sm">
@@ -74,6 +73,12 @@ function Timer() {
 				<InputGroup.Append>
 					<Button onClick={timerPause} sz="sm">
 						{pauseButtonLabel}
+					</Button>
+				</InputGroup.Append>
+				<FormControl placeholder={formattedTime} readOnly disabled />
+				<InputGroup.Append>
+					<Button variant="secondary" sz="sm">
+						Reset Timer
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>
