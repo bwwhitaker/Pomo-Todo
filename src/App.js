@@ -4,12 +4,10 @@ import GetTime from './Components/GetTime';
 import GetCompletedTasks from './Components/GetCompletedTasks';
 import Timer from './Components/Timer';
 import ToDo from './Components/ToDo';
-import GetCompletedTasks from './Components/GetCompletedTasks';
 import DisplayCurrentTask from './Components/DisplayCurrentTask';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import DisplayCurrentTask from './Components/DisplayCurrentTask';
 
 function App() {
 	return (
