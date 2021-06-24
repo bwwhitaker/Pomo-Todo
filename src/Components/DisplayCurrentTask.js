@@ -13,8 +13,11 @@ function DisplayCurrentTask() {
 
 	const [show, setShow] = useState('none');
 
+<<<<<<< Updated upstream
 	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
 
+=======
+>>>>>>> Stashed changes
 	useEffect(() => {
 		const interval = setInterval(() => {
 			var displayedTask = JSON.parse(localStorage.getItem('currentTask'));
@@ -81,6 +84,7 @@ function DisplayCurrentTask() {
 		deleteCurrentTask();
 	}
 
+<<<<<<< Updated upstream
 	function deselectToDo(taskNameToSendBack) {
 		setShow('none');
 		const retrievedToDos = localStorage.getItem('todoList');
@@ -101,6 +105,9 @@ function DisplayCurrentTask() {
 		console.log(freshparsedRetrievedToDos);
 		deleteCurrentTask();
 	}
+=======
+	function deselectToDo(taskNameToSendBack) {}
+>>>>>>> Stashed changes
 
 	return (
 		<div>

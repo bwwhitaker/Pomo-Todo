@@ -4,7 +4,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import tomato from '../Media/tomato-small.png';
+<<<<<<< Updated upstream
 import '../App.css';
+=======
+>>>>>>> Stashed changes
 
 function ToDo() {
 	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
@@ -156,7 +159,19 @@ function ToDo() {
 			</InputGroup>
 			<p></p>
 			<div key="toDoList">
+<<<<<<< Updated upstream
 				{tasksToDo.length === 1 && <p>Looks like you've got nothing ToDo!</p>}
+=======
+				{tasksToDo.length === 1 && (
+					<Table size="sm" variant="dark">
+						<tbody>
+							<tr>
+								<td>Looks like you've got nothing ToDo!</td>
+							</tr>
+						</tbody>
+					</Table>
+				)}
+>>>>>>> Stashed changes
 				<Table size="sm" variant="dark">
 					{tasksToDo
 						.map((todo) => (
