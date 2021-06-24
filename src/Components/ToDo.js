@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
+import tomato from '../Media/tomato-small.png';
+import '../App.css';
 
 function ToDo() {
 	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
@@ -12,7 +14,6 @@ function ToDo() {
 		if (localStorage.getItem('todoList') === null) {
 			var createdOn = new Date().toISOString();
 			var initializeList = {
-				id: 1,
 				todo: 'Nothing to do!',
 				created_on: createdOn,
 				status: 'scheduled',
@@ -61,31 +62,21 @@ function ToDo() {
 		return [storedValue, setValue];
 	}
 
-	function timerStart() {
+	function setAsCurrentTask() {
 		if (inputEl.current.value === '') {
 		} else {
-			const retrievedToDos = localStorage.getItem('todoList');
-			var parsedRetrievedToDos = JSON.parse(retrievedToDos);
-			console.log('timer start');
-			console.log(parsedRetrievedToDos);
-			var createdOn = new Date().toISOString();
-			console.log(createdOn);
-			var keyGen = parsedRetrievedToDos.length + 1;
-			console.log(keyGen);
-			//Update to source item from Entry Form as the item. Also clear the entry form.
-			const newItem = {
-				id: keyGen,
-				todo: inputEl.current.value,
-				created_on: createdOn,
-				status: 'working',
-			};
-			setTasksToDo([...tasksToDo, newItem]);
-			const freshretrievedToDos = localStorage.getItem('todoList');
-			var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
-			console.log(freshparsedRetrievedToDos);
+			setCurrentTask([inputEl.current.value]);
+			const currentRetrievedTask = JSON.parse(
+				localStorage.getItem('currentTask')
+			);
+			console.log(currentRetrievedTask);
 			inputEl.current.focus();
 			inputEl.current.value = '';
 		}
+	}
+
+	function setScheduledTaskAsCurrentTask(taskName) {
+		setCurrentTask(taskName);
 	}
 
 	function scheduleForLater() {
@@ -97,11 +88,9 @@ function ToDo() {
 			console.log(parsedRetrievedToDos);
 			var createdOn = new Date().toISOString();
 			console.log(createdOn);
-			var keyGen = parsedRetrievedToDos.length + 1;
-			console.log(keyGen);
+
 			//Update to source item from Entry Form as the item. Also clear the entry form.
 			const newItem = {
-				id: keyGen,
 				todo: inputEl.current.value,
 				created_on: createdOn,
 				status: 'scheduled',
@@ -130,6 +119,22 @@ function ToDo() {
 		inputEl.current.value = '';
 	}
 
+	function startScheduledForLaterTask(taskIdentifier, taskName) {
+		console.log(taskIdentifier);
+		console.log(taskName);
+		setScheduledTaskAsCurrentTask(taskName);
+		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
+		var keyOfTask = newTaskList.findIndex(function (task) {
+			return task.created_on === taskIdentifier;
+		});
+		if (keyOfTask > -1) {
+			newTaskList.splice(keyOfTask, 1);
+		}
+		setTasksToDo(newTaskList);
+		inputEl.current.focus();
+		inputEl.current.value = '';
+	}
+
 	return (
 		<div>
 			<InputGroup>
@@ -141,33 +146,41 @@ function ToDo() {
 					autoFocus={true}
 				/>
 				<InputGroup.Append>
-					<Button variant="outline-secondary" onClick={timerStart}>
-						Start
+					<Button variant="outline-secondary" onClick={setAsCurrentTask}>
+						Begin
 					</Button>
-
 					<Button variant="outline-secondary" onClick={scheduleForLater}>
 						Schedule
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>
+			<p></p>
 			<div key="toDoList">
 				{tasksToDo.length === 1 && <p>Looks like you've got nothing ToDo!</p>}
-				<Table bordered striped size="sm" variant="dark">
+				<Table size="sm" variant="dark">
 					{tasksToDo
 						.map((todo) => (
 							<tbody>
 								<tr>
-									<td>{todo.todo}</td>
 									<td>
-										<InputGroup>
+										<img src={tomato} alt="Tomato" />
+									</td>
+									<td className="left">{todo.todo}</td>
+									<td className="right">
+										<InputGroup className="right">
 											<InputGroup.Prepend>
 												<Button
 													variant="success"
 													sz="sm"
 													value={todo.created_on}
-													onClick={() => console.log(todo.created_on)}
+													onClick={() =>
+														startScheduledForLaterTask(
+															todo.created_on,
+															todo.todo
+														)
+													}
 												>
-													Start
+													Select
 												</Button>
 											</InputGroup.Prepend>
 											<InputGroup.Append>
@@ -175,7 +188,7 @@ function ToDo() {
 													variant="danger"
 													onClick={() => removeTask(todo.created_on)}
 												>
-													Remove
+													Delete
 												</Button>
 											</InputGroup.Append>
 										</InputGroup>
@@ -183,6 +196,7 @@ function ToDo() {
 								</tr>
 							</tbody>
 						))
+						//To Remove the Nothing To Do Statement
 						.slice(1)}
 				</Table>
 			</div>
