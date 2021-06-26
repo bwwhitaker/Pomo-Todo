@@ -15,7 +15,7 @@ function GetCompletedTasks() {
 	}, []);
 
 	return (
-		<div>
+		<div className="right">
 			<p>
 				Completed: {getCompleteddNumber}{' '}
 				<img className="center" src={tomato} alt="Tomato" />

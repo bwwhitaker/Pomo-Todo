@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../App.css';
 
 function GetTime() {
 	const [timeKey, setTimeKey] = useState(new Date());
@@ -22,7 +23,7 @@ function GetTime() {
 
 	return (
 		<div>
-			<p>Time: {time}</p>
+			<p className="left">{time}</p>
 		</div>
 	);
 }

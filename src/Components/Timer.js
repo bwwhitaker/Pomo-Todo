@@ -15,6 +15,11 @@ function Timer() {
 		setTimerValue(workTime);
 		setTimerRunning(true);
 	}
+	function resetTimer() {
+		console.log('reset timer');
+		setTimerValue(0);
+		setTimerRunning(false);
+	}
 
 	function timerStartBreak() {
 		console.log('started break');
@@ -77,7 +82,7 @@ function Timer() {
 				</InputGroup.Append>
 				<FormControl placeholder={formattedTime} readOnly disabled />
 				<InputGroup.Append>
-					<Button variant="secondary" sz="sm">
+					<Button onClick={resetTimer} variant="secondary" sz="sm">
 						Reset Timer
 					</Button>
 				</InputGroup.Append>

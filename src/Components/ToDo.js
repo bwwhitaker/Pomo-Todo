@@ -157,7 +157,7 @@ function ToDo() {
 			<p></p>
 			<div key="toDoList">
 				{tasksToDo.length === 1 && (
-					<Table size="sm" variant="dark">
+					<Table striped size="sm" variant="dark">
 						<tbody>
 							<tr>
 								<td>Looks like you've got nothing ToDo!</td>
@@ -165,7 +165,7 @@ function ToDo() {
 						</tbody>
 					</Table>
 				)}
-				<Table size="sm" variant="dark">
+				<Table striped size="sm" variant="dark">
 					{tasksToDo
 						.map((todo) => (
 							<tbody>

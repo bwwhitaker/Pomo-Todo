@@ -1,4 +1,5 @@
 import './App.css';
+import React, { useState } from 'react';
 import GetDate from './Components/GetDate';
 import GetTime from './Components/GetTime';
 import GetCompletedTasks from './Components/GetCompletedTasks';
@@ -13,13 +14,13 @@ function App() {
 	return (
 		<div className="App">
 			<Row>
-				<Col>
+				<Col xs={3} md={2}>
 					<GetDate />
 				</Col>
-				<Col>
+				<Col xs={5} md={3}>
 					<GetTime />
 				</Col>
-				<Col>
+				<Col xs={4} md={7}>
 					<GetCompletedTasks />
 				</Col>
 			</Row>
