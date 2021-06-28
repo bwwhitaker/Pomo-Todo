@@ -5,6 +5,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import tomato from '../Media/tomato-small.png';
 import '../App.css';
+import { TaskStore } from '../TaskStore';
 
 function ToDo() {
 	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
@@ -69,6 +70,10 @@ function ToDo() {
 			const currentRetrievedTask = JSON.parse(
 				localStorage.getItem('currentTask')
 			);
+			TaskStore.update((s) => {
+				s.showCurrentTask = 'block';
+			});
+			localStorage.setItem('showCurrentTask', JSON.stringify('block'));
 			console.log(currentRetrievedTask);
 			inputEl.current.focus();
 			inputEl.current.value = '';
@@ -77,6 +82,10 @@ function ToDo() {
 
 	function setScheduledTaskAsCurrentTask(taskName) {
 		setCurrentTask(taskName);
+		TaskStore.update((s) => {
+			s.showCurrentTask = 'block';
+		});
+		localStorage.setItem('showCurrentTask', JSON.stringify('block'));
 	}
 
 	function scheduleForLater() {

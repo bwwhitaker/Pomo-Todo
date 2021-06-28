@@ -4,48 +4,33 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import '../App.css';
 import tomato from '../Media/tomato-small.png';
+import { TaskStore } from '../TaskStore';
 
 function DisplayCurrentTask() {
 	const [currentTask, setCurrentTask] = useState(
 		localStorage.getItem('currentTask')
 	);
-	const [completedTaskCount, setCompletedTaskCount] = useState(
-		localStorage.getItem('completedTaskCount')
-	);
 
-	const [show, setShow] = useState('none');
+	const showCurrentTask = TaskStore.useState((s) => s.showCurrentTask);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			var displayedTask = JSON.parse(localStorage.getItem('currentTask'));
-			setCurrentTask(displayedTask);
-		}, 250);
-		if (currentTask !== 'Pick a new task.') {
-			setShow('block');
-		}
-		if (currentTask === 'Pick a new task.') {
-			setShow('none');
-		}
-		if (currentTask === `"Pick a new task."`) {
-			setShow('none');
-		}
-
-		return () => clearInterval(interval);
-	});
+	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
 	function deleteCurrentTask() {
 		var resetTask = 'Pick a new task.';
 		localStorage.setItem('currentTask', JSON.stringify(resetTask));
 		setCurrentTask('Pick a new task.');
-		setShow('none');
+		TaskStore.update((s) => {
+			s.showCurrentTask = 'none';
+		});
+		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 	}
 
 	function completeCurrentTask() {
-		setCompletedTaskCount(Number(completedTaskCount) + 1);
-		var taskCount = Number(completedTaskCount) + 1;
-		localStorage.setItem('completedTaskCount', taskCount);
-		setShow('none');
+		TaskStore.update((s) => {
+			s.completedTaskCount += 1;
+		});
 		deleteCurrentTask();
+		localStorage.setItem('completedTaskCount', completedTaskCount + 1);
 	}
 
 	function deselectToDo() {
@@ -55,7 +40,7 @@ function DisplayCurrentTask() {
 	}
 
 	return (
-		<div style={{ display: show }}>
+		<div style={{ display: showCurrentTask }}>
 			<Table striped size="sm" variant="dark">
 				<tbody>
 					<tr>
