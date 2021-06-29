@@ -13,6 +13,8 @@ function DisplayCurrentTask() {
 		TaskStore.useState((s) => s.showCurrentTask)
 	);
 
+	const todoList = JSON.parse(TaskStore.useState((s) => s.todoList));
+
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
 	function deleteCurrentTask() {
@@ -37,6 +39,19 @@ function DisplayCurrentTask() {
 	function deselectToDo() {
 		console.log('sending back');
 		console.log(currentTask);
+		var createdOn = new Date().toISOString();
+		const updatedTodos = todoList.push({
+			todo: currentTask,
+			created_on: createdOn,
+			status: 'scheduled',
+		});
+		//Length of New Items List
+		console.log(updatedTodos);
+		console.log(todoList);
+		localStorage.setItem('todoList', JSON.stringify(todoList));
+		TaskStore.update((s) => {
+			s.todoList = JSON.stringify(todoList);
+		});
 		deleteCurrentTask();
 	}
 

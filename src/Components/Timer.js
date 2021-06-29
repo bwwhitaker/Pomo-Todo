@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
+import '../App.css';
 
 function Timer() {
 	const [timerValue, setTimerValue] = useState(0);
 	const [timerRunning, setTimerRunning] = useState(false);
+	const [showPause, setShowPause] = useState('none');
 
 	var workTime = 25 * 60 * 1000;
 	var breakTime = 5 * 60 * 1000;
@@ -14,17 +16,20 @@ function Timer() {
 		console.log('started work');
 		setTimerValue(workTime);
 		setTimerRunning(true);
+		setShowPause('');
 	}
 	function resetTimer() {
 		console.log('reset timer');
 		setTimerValue(0);
 		setTimerRunning(false);
+		setShowPause('none');
 	}
 
 	function timerStartBreak() {
 		console.log('started break');
 		setTimerValue(breakTime);
 		setTimerRunning(true);
+		setShowPause('');
 	}
 	function timerPause() {
 		if (timerRunning === true) {
@@ -75,11 +80,15 @@ function Timer() {
 						Break
 					</Button>
 				</InputGroup.Append>
+
 				<InputGroup.Append>
-					<Button onClick={timerPause} sz="sm">
-						{pauseButtonLabel}
-					</Button>
+					<div style={{ display: showPause }}>
+						<Button className="unrounded" onClick={timerPause} sz="sm">
+							{pauseButtonLabel}
+						</Button>
+					</div>
 				</InputGroup.Append>
+
 				<FormControl placeholder={formattedTime} readOnly disabled />
 				<InputGroup.Append>
 					<Button onClick={resetTimer} variant="secondary" sz="sm">

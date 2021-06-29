@@ -23,3 +23,7 @@
 .center {
 	position: relative;
 }
+
+.unrounded {
+	border-radius: 0 !important;
+}
