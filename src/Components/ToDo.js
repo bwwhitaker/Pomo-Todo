@@ -33,6 +33,7 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.todoList = JSON.stringify(initializeList);
 			});
+			console.log(initializeList);
 			localStorage.setItem('completedTaskCount', 0);
 			TaskStore.update((s) => {
 				s.completedTaskCount = 0;
@@ -54,14 +55,14 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.currentTask = JSON.stringify(inputEl.current.value);
 			});
-			TaskStore.update((s) => {
-				s.showCurrentTask = JSON.stringify('block');
-			});
-			localStorage.setItem('showCurrentTask', JSON.stringify('block'));
 			localStorage.setItem(
 				'currentTask',
 				JSON.stringify(inputEl.current.value)
 			);
+			TaskStore.update((s) => {
+				s.showCurrentTask = JSON.stringify('block');
+			});
+			localStorage.setItem('showCurrentTask', JSON.stringify('block'));
 			inputEl.current.focus();
 			inputEl.current.value = '';
 		}
@@ -71,33 +72,33 @@ function ToDo() {
 		TaskStore.update((s) => {
 			s.currentTask = JSON.stringify(taskName);
 		});
+		localStorage.setItem('currentTask', JSON.stringify(taskName));
 		TaskStore.update((s) => {
 			s.showCurrentTask = JSON.stringify('block');
 		});
 		localStorage.setItem('showCurrentTask', JSON.stringify('block'));
-		localStorage.setItem('currentTask', JSON.stringify(taskName));
 	}
 
 	function scheduleForLater() {
 		if (inputEl.current.value === '') {
 		} else {
-			const retrievedToDos = localStorage.getItem('todoList');
-			var parsedRetrievedToDos = JSON.parse(retrievedToDos);
 			console.log('schedule for later');
-			console.log(parsedRetrievedToDos);
+			console.log(tasksToDo);
 			var createdOn = new Date().toISOString();
 			console.log(createdOn);
-
 			//Update to source item from Entry Form as the item. Also clear the entry form.
 			const newItem = {
 				todo: inputEl.current.value,
 				created_on: createdOn,
 				status: 'scheduled',
 			};
-			//setTasksToDo([...tasksToDo, newItem]);
-			const freshretrievedToDos = localStorage.getItem('todoList');
-			var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
-			console.log(freshparsedRetrievedToDos);
+			const newItems = tasksToDo.push(newItem);
+			//Length of New Items List
+			console.log(newItems);
+			localStorage.setItem('todoList', JSON.stringify(tasksToDo));
+			TaskStore.update((s) => {
+				s.todoList = JSON.stringify(tasksToDo);
+			});
 			inputEl.current.focus();
 			inputEl.current.value = '';
 		}
@@ -113,7 +114,10 @@ function ToDo() {
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		//setTasksToDo(newTaskList);
+		TaskStore.update((s) => {
+			s.todoList = JSON.stringify(newTaskList);
+		});
+		localStorage.setItem('todoList', JSON.stringify(newTaskList));
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
@@ -129,7 +133,10 @@ function ToDo() {
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		//setTasksToDo(newTaskList);
+		TaskStore.update((s) => {
+			s.todoList = JSON.stringify(newTaskList);
+		});
+		localStorage.setItem('todoList', JSON.stringify(newTaskList));
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
