@@ -2,5 +2,8 @@ import { Store } from 'pullstate';
 
 export const TaskStore = new Store({
 	completedTaskCount: JSON.parse(localStorage.getItem('completedTaskCount')),
-	showCurrentTask: JSON.parse(localStorage.getItem('showCurrentTask')),
+	showCurrentTask: localStorage.getItem('showCurrentTask'),
+	currentTask: localStorage.getItem('currentTask'),
+	todoList: localStorage.getItem('todoList'),
+	todoListReady: localStorage.getItem('todoListReady'),
 });

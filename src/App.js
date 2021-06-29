@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import GetDate from './Components/GetDate';
 import GetTime from './Components/GetTime';
 import GetCompletedTasks from './Components/GetCompletedTasks';

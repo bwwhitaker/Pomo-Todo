@@ -7,30 +7,31 @@ import tomato from '../Media/tomato-small.png';
 import { TaskStore } from '../TaskStore';
 
 function DisplayCurrentTask() {
-	const [currentTask, setCurrentTask] = useState(
-		localStorage.getItem('currentTask')
-	);
+	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
-	const showCurrentTask = TaskStore.useState((s) => s.showCurrentTask);
+	const showCurrentTask = JSON.parse(
+		TaskStore.useState((s) => s.showCurrentTask)
+	);
 
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
 	function deleteCurrentTask() {
 		var resetTask = 'Pick a new task.';
 		localStorage.setItem('currentTask', JSON.stringify(resetTask));
-		setCurrentTask('Pick a new task.');
+		//setCurrentTask('Pick a new task.');
 		TaskStore.update((s) => {
-			s.showCurrentTask = 'none';
+			s.showCurrentTask = JSON.stringify('none');
 		});
 		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 	}
 
 	function completeCurrentTask() {
+		const newTaskCount = completedTaskCount + 1;
 		TaskStore.update((s) => {
 			s.completedTaskCount += 1;
 		});
 		deleteCurrentTask();
-		localStorage.setItem('completedTaskCount', completedTaskCount + 1);
+		localStorage.setItem('completedTaskCount', newTaskCount);
 	}
 
 	function deselectToDo() {

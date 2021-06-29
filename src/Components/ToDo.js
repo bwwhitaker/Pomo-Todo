@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -8,84 +8,74 @@ import '../App.css';
 import { TaskStore } from '../TaskStore';
 
 function ToDo() {
-	var [tasksToDo, setTasksToDo] = useLocalStorage('todoList', []);
-	var [currentTask, setCurrentTask] = useLocalStorage('currentTask', '');
+	const todoListReadyToRender = JSON.parse(
+		TaskStore.useState((s) => s.todoListReady)
+	);
+	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
+
+	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
 
 	useEffect(() => {
-		if (localStorage.getItem('todoList') === null) {
+		if (localStorage.length > 0) {
+			console.log('got it');
+			console.log(todoListReadyToRender);
+			console.log(showCurrent);
+		} else {
 			var createdOn = new Date().toISOString();
-			var initializeList = {
-				todo: 'Nothing to do!',
-				created_on: createdOn,
-				status: 'scheduled',
-			};
+			var initializeList = [
+				{
+					todo: 'Nothing to do!',
+					created_on: createdOn,
+					status: 'scheduled',
+				},
+			];
 			localStorage.setItem('todoList', JSON.stringify(initializeList));
-			var retrievedData = localStorage.getItem('todoList');
-			var todos = JSON.parse(retrievedData);
-			console.log(todos);
-			setTasksToDo([(tasksToDo = todos)]);
-			console.log(tasksToDo);
+			TaskStore.update((s) => {
+				s.todoList = JSON.stringify(initializeList);
+			});
+			localStorage.setItem('completedTaskCount', 0);
+			TaskStore.update((s) => {
+				s.completedTaskCount = 0;
+			});
+			localStorage.setItem('todoListReady', JSON.stringify('yes'));
+			TaskStore.update((s) => {
+				s.todoListReady = JSON.stringify('yes');
+			});
+			localStorage.setItem('showCurrentTask', JSON.stringify('none'));
+			TaskStore.update((s) => {
+				s.showCurrentTask = JSON.stringify('none');
+			});
 		}
 	});
-
-	//Thanks to https://usehooks.com/useLocalStorage/
-	function useLocalStorage(key, initialValue) {
-		// State to store our value
-		// Pass initial state function to useState so logic is only executed once
-		const [storedValue, setStoredValue] = useState(() => {
-			try {
-				// Get from local storage by key
-				const item = window.localStorage.getItem(key);
-				// Parse stored json or if none return initialValue
-				return item ? JSON.parse(item) : initialValue;
-			} catch (error) {
-				// If error also return initialValue
-				console.log(error);
-				return initialValue;
-			}
-		});
-		// Return a wrapped version of useState's setter function that ...
-		// ... persists the new value to localStorage.
-		const setValue = (value) => {
-			try {
-				// Allow value to be a function so we have same API as useState
-				const valueToStore =
-					value instanceof Function ? value(storedValue) : value;
-				// Save state
-				setStoredValue(valueToStore);
-				// Save to local storage
-				window.localStorage.setItem(key, JSON.stringify(valueToStore));
-			} catch (error) {
-				// A more advanced implementation would handle the error case
-				console.log(error);
-			}
-		};
-		return [storedValue, setValue];
-	}
 
 	function setAsCurrentTask() {
 		if (inputEl.current.value === '') {
 		} else {
-			setCurrentTask([inputEl.current.value]);
-			const currentRetrievedTask = JSON.parse(
-				localStorage.getItem('currentTask')
-			);
 			TaskStore.update((s) => {
-				s.showCurrentTask = 'block';
+				s.currentTask = JSON.stringify(inputEl.current.value);
+			});
+			TaskStore.update((s) => {
+				s.showCurrentTask = JSON.stringify('block');
 			});
 			localStorage.setItem('showCurrentTask', JSON.stringify('block'));
-			console.log(currentRetrievedTask);
+			localStorage.setItem(
+				'currentTask',
+				JSON.stringify(inputEl.current.value)
+			);
 			inputEl.current.focus();
 			inputEl.current.value = '';
 		}
 	}
 
 	function setScheduledTaskAsCurrentTask(taskName) {
-		setCurrentTask(taskName);
 		TaskStore.update((s) => {
-			s.showCurrentTask = 'block';
+			s.currentTask = JSON.stringify(taskName);
+		});
+		TaskStore.update((s) => {
+			s.showCurrentTask = JSON.stringify('block');
 		});
 		localStorage.setItem('showCurrentTask', JSON.stringify('block'));
+		localStorage.setItem('currentTask', JSON.stringify(taskName));
 	}
 
 	function scheduleForLater() {
@@ -104,7 +94,7 @@ function ToDo() {
 				created_on: createdOn,
 				status: 'scheduled',
 			};
-			setTasksToDo([...tasksToDo, newItem]);
+			//setTasksToDo([...tasksToDo, newItem]);
 			const freshretrievedToDos = localStorage.getItem('todoList');
 			var freshparsedRetrievedToDos = JSON.parse(freshretrievedToDos);
 			console.log(freshparsedRetrievedToDos);
@@ -123,7 +113,7 @@ function ToDo() {
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		setTasksToDo(newTaskList);
+		//setTasksToDo(newTaskList);
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
@@ -139,7 +129,7 @@ function ToDo() {
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
-		setTasksToDo(newTaskList);
+		//setTasksToDo(newTaskList);
 		inputEl.current.focus();
 		inputEl.current.value = '';
 	}
@@ -164,59 +154,61 @@ function ToDo() {
 				</InputGroup.Append>
 			</InputGroup>
 			<p></p>
-			<div key="toDoList">
-				{tasksToDo.length === 1 && (
-					<Table striped size="sm" variant="dark">
-						<tbody>
-							<tr>
-								<td>Looks like you've got nothing ToDo!</td>
-							</tr>
-						</tbody>
-					</Table>
-				)}
-				<Table striped size="sm" variant="dark">
-					{tasksToDo
-						.map((todo) => (
+			{todoListReadyToRender === 'yes' && (
+				<div key="toDoList">
+					{tasksToDo.length === 1 && (
+						<Table striped size="sm" variant="dark">
 							<tbody>
 								<tr>
-									<td>
-										<img src={tomato} alt="Tomato" />
-									</td>
-									<td className="left">{todo.todo}</td>
-									<td className="right">
-										<InputGroup className="right">
-											<InputGroup.Prepend>
-												<Button
-													variant="success"
-													sz="sm"
-													value={todo.created_on}
-													onClick={() =>
-														startScheduledForLaterTask(
-															todo.created_on,
-															todo.todo
-														)
-													}
-												>
-													Select
-												</Button>
-											</InputGroup.Prepend>
-											<InputGroup.Append>
-												<Button
-													variant="danger"
-													onClick={() => removeTask(todo.created_on)}
-												>
-													Delete
-												</Button>
-											</InputGroup.Append>
-										</InputGroup>
-									</td>
+									<td>Looks like you've got nothing ToDo!</td>
 								</tr>
 							</tbody>
-						))
-						//To Remove the Nothing To Do Statement
-						.slice(1)}
-				</Table>
-			</div>
+						</Table>
+					)}
+					<Table striped size="sm" variant="dark">
+						{tasksToDo
+							.map((todo) => (
+								<tbody>
+									<tr>
+										<td>
+											<img src={tomato} alt="Tomato" />
+										</td>
+										<td className="left">{todo.todo}</td>
+										<td className="right">
+											<InputGroup className="right">
+												<InputGroup.Prepend>
+													<Button
+														variant="success"
+														sz="sm"
+														value={todo.created_on}
+														onClick={() =>
+															startScheduledForLaterTask(
+																todo.created_on,
+																todo.todo
+															)
+														}
+													>
+														Select
+													</Button>
+												</InputGroup.Prepend>
+												<InputGroup.Append>
+													<Button
+														variant="danger"
+														onClick={() => removeTask(todo.created_on)}
+													>
+														Delete
+													</Button>
+												</InputGroup.Append>
+											</InputGroup>
+										</td>
+									</tr>
+								</tbody>
+							))
+							//To Remove the Nothing To Do Statement
+							.slice(1)}
+					</Table>
+				</div>
+			)}
 		</div>
 	);
 }
