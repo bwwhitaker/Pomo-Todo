@@ -7,7 +7,7 @@ import tomato from '../Media/tomato-small.png';
 import { TaskStore } from '../TaskStore';
 
 function DisplayCurrentTask() {
-	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask)).todo;
+	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
 	const showCurrentTask = JSON.parse(
 		TaskStore.useState((s) => s.showCurrentTask)
