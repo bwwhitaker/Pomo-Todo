@@ -9,6 +9,7 @@ import DisplayCurrentTask from './Components/DisplayCurrentTask';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import ToDoCard from './Components/ToDoCard';
 
 function App() {
 	return (
@@ -25,10 +26,11 @@ function App() {
 				</Col>
 			</Row>
 			<Row>
-				<Col>
+				<Col md={12} lg={6}>
 					<ToDo />
+					<ToDoCard />
 				</Col>
-				<Col>
+				<Col md={12} lg={6}>
 					<Timer />
 					<p></p>
 					<DisplayCurrentTask />

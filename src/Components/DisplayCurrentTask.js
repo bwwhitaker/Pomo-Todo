@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
@@ -7,13 +7,14 @@ import tomato from '../Media/tomato-small.png';
 import { TaskStore } from '../TaskStore';
 
 function DisplayCurrentTask() {
-	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
+	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask)).todo;
 
 	const showCurrentTask = JSON.parse(
 		TaskStore.useState((s) => s.showCurrentTask)
 	);
 
 	const todoList = JSON.parse(TaskStore.useState((s) => s.todoList));
+	const completedList = JSON.parse(TaskStore.useState((s) => s.completedList));
 
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
@@ -24,6 +25,9 @@ function DisplayCurrentTask() {
 		TaskStore.update((s) => {
 			s.showCurrentTask = JSON.stringify('none');
 		});
+		TaskStore.update((s) => {
+			s.currentTask = JSON.stringify(resetTask);
+		});
 		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 	}
 
@@ -31,6 +35,20 @@ function DisplayCurrentTask() {
 		const newTaskCount = completedTaskCount + 1;
 		TaskStore.update((s) => {
 			s.completedTaskCount += 1;
+		});
+		var completedOn = new Date().toISOString();
+		const updateCompletedTodos = completedList.push({
+			todo: currentTask,
+			completed_on: completedOn,
+			status: 'completed',
+			category: '',
+			order: 0,
+		});
+		console.log(updateCompletedTodos);
+		console.log(completedList);
+		localStorage.setItem('completedList', JSON.stringify(completedList));
+		TaskStore.update((s) => {
+			s.completedList = JSON.stringify(completedList);
 		});
 		deleteCurrentTask();
 		localStorage.setItem('completedTaskCount', newTaskCount);

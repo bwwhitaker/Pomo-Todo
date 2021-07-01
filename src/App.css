@@ -27,3 +27,8 @@
 .unrounded {
 	border-radius: 0 !important;
 }
+
+.card {
+	background-color: #282c34;
+	color: black;
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import tomato from '../Media/tomato-small.png';
 import '../App.css';
 import { TaskStore } from '../TaskStore';

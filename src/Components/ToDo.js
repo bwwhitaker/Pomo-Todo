@@ -22,18 +22,21 @@ function ToDo() {
 			console.log(showCurrent);
 		} else {
 			var createdOn = new Date().toISOString();
-			var initializeList = [
+			var initializeTodoList = [
 				{
 					todo: 'Nothing to do!',
 					created_on: createdOn,
 					status: 'scheduled',
+					category: '',
+					due_by: '',
+					order: 0,
 				},
 			];
-			localStorage.setItem('todoList', JSON.stringify(initializeList));
+			localStorage.setItem('todoList', JSON.stringify(initializeTodoList));
 			TaskStore.update((s) => {
-				s.todoList = JSON.stringify(initializeList);
+				s.todoList = JSON.stringify(initializeTodoList);
 			});
-			console.log(initializeList);
+			console.log(initializeTodoList);
 			localStorage.setItem('completedTaskCount', 0);
 			TaskStore.update((s) => {
 				s.completedTaskCount = 0;
@@ -46,6 +49,24 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.showCurrentTask = JSON.stringify('none');
 			});
+			var initializeCompletedList = [
+				{
+					todo: 'Nothing completed!',
+					created_on: createdOn,
+					status: 'completed',
+					category: '',
+					due_by: '',
+					order: 0,
+				},
+			];
+			localStorage.setItem(
+				'completedList',
+				JSON.stringify(initializeCompletedList)
+			);
+			TaskStore.update((s) => {
+				s.completedList = JSON.stringify(initializeCompletedList);
+			});
+			console.log(initializeCompletedList);
 		}
 	});
 
@@ -68,11 +89,25 @@ function ToDo() {
 		}
 	}
 
-	function setScheduledTaskAsCurrentTask(taskName) {
+	function setScheduledTaskAsCurrentTask(
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy
+	) {
+		const activeTask = {
+			todo: taskName,
+			createdOn: taskCreatedOn,
+			category: taskCategory,
+			status: 'current',
+			due_by: taskDueBy,
+			order: '',
+		};
+		console.log(activeTask);
 		TaskStore.update((s) => {
-			s.currentTask = JSON.stringify(taskName);
+			s.currentTask = JSON.stringify(activeTask);
 		});
-		localStorage.setItem('currentTask', JSON.stringify(taskName));
+		localStorage.setItem('currentTask', JSON.stringify(activeTask));
 		TaskStore.update((s) => {
 			s.showCurrentTask = JSON.stringify('block');
 		});
@@ -91,6 +126,9 @@ function ToDo() {
 				todo: inputEl.current.value,
 				created_on: createdOn,
 				status: 'scheduled',
+				category: '',
+				order: 0,
+				due_by: '',
 			};
 			const newItems = tasksToDo.push(newItem);
 			//Length of New Items List
@@ -122,10 +160,21 @@ function ToDo() {
 		inputEl.current.value = '';
 	}
 
-	function startScheduledForLaterTask(taskIdentifier, taskName) {
+	function startScheduledForLaterTask(
+		taskIdentifier,
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy
+	) {
 		console.log(taskIdentifier);
 		console.log(taskName);
-		setScheduledTaskAsCurrentTask(taskName);
+		setScheduledTaskAsCurrentTask(
+			taskName,
+			taskCreatedOn,
+			taskCategory,
+			taskDueBy
+		);
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
 			return task.created_on === taskIdentifier;
@@ -191,7 +240,10 @@ function ToDo() {
 														onClick={() =>
 															startScheduledForLaterTask(
 																todo.created_on,
-																todo.todo
+																todo.todo,
+																todo.created_on,
+																todo.category,
+																todo.due_by
 															)
 														}
 													>
