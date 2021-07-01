@@ -28,7 +28,6 @@ function App() {
 			<Row>
 				<Col md={12} lg={6}>
 					<ToDo />
-					<ToDoCard />
 				</Col>
 				<Col md={12} lg={6}>
 					<Timer />
