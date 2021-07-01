@@ -105,9 +105,9 @@ function ToDo() {
 		};
 		console.log(activeTask);
 		TaskStore.update((s) => {
-			s.currentTask = JSON.stringify(activeTask);
+			s.currentTask = JSON.stringify(activeTask.todo);
 		});
-		localStorage.setItem('currentTask', JSON.stringify(activeTask));
+		localStorage.setItem('currentTask', JSON.stringify(activeTask.todo));
 		TaskStore.update((s) => {
 			s.showCurrentTask = JSON.stringify('block');
 		});
