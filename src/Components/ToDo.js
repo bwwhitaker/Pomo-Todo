@@ -8,9 +8,7 @@ import '../App.css';
 import { TaskStore } from '../TaskStore';
 
 function ToDo() {
-	const todoListReadyToRender = JSON.parse(
-		TaskStore.useState((s) => s.todoListReady)
-	);
+	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
 	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
 
 	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
@@ -59,10 +57,7 @@ function ToDo() {
 					order: 0,
 				},
 			];
-			localStorage.setItem(
-				'completedList',
-				JSON.stringify(initializeCompletedList)
-			);
+			localStorage.setItem('completedList', JSON.stringify(initializeCompletedList));
 			TaskStore.update((s) => {
 				s.completedList = JSON.stringify(initializeCompletedList);
 			});
@@ -76,10 +71,7 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.currentTask = JSON.stringify(inputEl.current.value);
 			});
-			localStorage.setItem(
-				'currentTask',
-				JSON.stringify(inputEl.current.value)
-			);
+			localStorage.setItem('currentTask', JSON.stringify(inputEl.current.value));
 			TaskStore.update((s) => {
 				s.showCurrentTask = JSON.stringify('block');
 			});
@@ -89,12 +81,7 @@ function ToDo() {
 		}
 	}
 
-	function setScheduledTaskAsCurrentTask(
-		taskName,
-		taskCreatedOn,
-		taskCategory,
-		taskDueBy
-	) {
+	function setScheduledTaskAsCurrentTask(taskName, taskCreatedOn, taskCategory, taskDueBy) {
 		const activeTask = {
 			todo: taskName,
 			createdOn: taskCreatedOn,
@@ -105,9 +92,9 @@ function ToDo() {
 		};
 		console.log(activeTask);
 		TaskStore.update((s) => {
-			s.currentTask = JSON.stringify(activeTask);
+			s.currentTask = JSON.stringify(activeTask.todo);
 		});
-		localStorage.setItem('currentTask', JSON.stringify(activeTask));
+		localStorage.setItem('currentTask', JSON.stringify(activeTask.todo));
 		TaskStore.update((s) => {
 			s.showCurrentTask = JSON.stringify('block');
 		});
@@ -160,21 +147,10 @@ function ToDo() {
 		inputEl.current.value = '';
 	}
 
-	function startScheduledForLaterTask(
-		taskIdentifier,
-		taskName,
-		taskCreatedOn,
-		taskCategory,
-		taskDueBy
-	) {
+	function startScheduledForLaterTask(taskIdentifier, taskName, taskCreatedOn, taskCategory, taskDueBy) {
 		console.log(taskIdentifier);
 		console.log(taskName);
-		setScheduledTaskAsCurrentTask(
-			taskName,
-			taskCreatedOn,
-			taskCategory,
-			taskDueBy
-		);
+		setScheduledTaskAsCurrentTask(taskName, taskCreatedOn, taskCategory, taskDueBy);
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
 			return task.created_on === taskIdentifier;
@@ -195,25 +171,25 @@ function ToDo() {
 			<InputGroup>
 				<FormControl
 					ref={inputEl}
-					placeholder="Task"
-					aria-label="Task Input"
-					aria-describedby="basic-addon2"
+					placeholder='Task'
+					aria-label='Task Input'
+					aria-describedby='basic-addon2'
 					autoFocus={true}
 				/>
 				<InputGroup.Append>
-					<Button variant="outline-secondary" onClick={setAsCurrentTask}>
+					<Button variant='outline-secondary' onClick={setAsCurrentTask}>
 						Begin
 					</Button>
-					<Button variant="outline-secondary" onClick={scheduleForLater}>
+					<Button variant='outline-secondary' onClick={scheduleForLater}>
 						Schedule
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>
 			<p></p>
 			{todoListReadyToRender === 'yes' && (
-				<div key="toDoList">
+				<div key='toDoList'>
 					{tasksToDo.length === 1 && (
-						<Table striped size="sm" variant="dark">
+						<Table striped size='sm' variant='dark'>
 							<tbody>
 								<tr>
 									<td>Looks like you've got nothing ToDo!</td>
@@ -221,21 +197,21 @@ function ToDo() {
 							</tbody>
 						</Table>
 					)}
-					<Table striped size="sm" variant="dark">
+					<Table striped size='sm' variant='dark'>
 						{tasksToDo
 							.map((todo) => (
 								<tbody>
 									<tr>
 										<td>
-											<img src={tomato} alt="Tomato" />
+											<img src={tomato} alt='Tomato' />
 										</td>
-										<td className="left">{todo.todo}</td>
-										<td className="right">
-											<InputGroup className="right">
+										<td className='left'>{todo.todo}</td>
+										<td className='right'>
+											<InputGroup className='right'>
 												<InputGroup.Prepend>
 													<Button
-														variant="success"
-														sz="sm"
+														variant='success'
+														sz='sm'
 														value={todo.created_on}
 														onClick={() =>
 															startScheduledForLaterTask(
@@ -251,10 +227,7 @@ function ToDo() {
 													</Button>
 												</InputGroup.Prepend>
 												<InputGroup.Append>
-													<Button
-														variant="danger"
-														onClick={() => removeTask(todo.created_on)}
-													>
+													<Button variant='danger' onClick={() => removeTask(todo.created_on)}>
 														Delete
 													</Button>
 												</InputGroup.Append>
