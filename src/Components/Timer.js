@@ -123,7 +123,7 @@ function Timer() {
 				</InputGroup.Append>
 				<InputGroup.Append>
 					<Button onClick={resetTimer} variant='secondary' sz='sm'>
-						Reset Timer
+						Reset
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>
