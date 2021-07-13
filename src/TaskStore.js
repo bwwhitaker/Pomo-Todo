@@ -7,4 +7,6 @@ export const TaskStore = new Store({
 	todoList: localStorage.getItem('todoList'),
 	todoListReady: localStorage.getItem('todoListReady'),
 	completedList: localStorage.getItem('completedList'),
+	timerEndTime: 0,
+	timerValue: 0,
 });

@@ -13,7 +13,7 @@ import ToDoCard from './Components/ToDoCard';
 
 function App() {
 	return (
-		<div className="App">
+		<div className='App'>
 			<Row>
 				<Col xs={3} md={2}>
 					<GetDate />

@@ -9,9 +9,7 @@ import { TaskStore } from '../TaskStore';
 function DisplayCurrentTask() {
 	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
-	const showCurrentTask = JSON.parse(
-		TaskStore.useState((s) => s.showCurrentTask)
-	);
+	const showCurrentTask = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
 
 	const todoList = JSON.parse(TaskStore.useState((s) => s.todoList));
 	const completedList = JSON.parse(TaskStore.useState((s) => s.completedList));
@@ -75,36 +73,28 @@ function DisplayCurrentTask() {
 
 	return (
 		<div style={{ display: showCurrentTask }}>
-			<Table striped size="sm" variant="dark">
+			<Table striped size='sm' variant='dark'>
 				<tbody>
 					<tr>
 						<td>
-							<img src={tomato} alt="Tomato" />
+							<img src={tomato} alt='Tomato' />
 						</td>
-						<td className="left">Current Task:</td>
-						<td className="left">{currentTask}</td>
-						<td className="right">
+						<td className='left'>Current Task:</td>
+						<td className='left'>{currentTask}</td>
+						<td className='right'>
 							<InputGroup>
 								<InputGroup.Prepend>
-									<Button
-										variant="success"
-										sz="sm"
-										onClick={completeCurrentTask}
-									>
+									<Button variant='success' sz='sm' onClick={completeCurrentTask}>
 										Complete
 									</Button>
 								</InputGroup.Prepend>
 								<InputGroup.Append>
-									<Button
-										value={currentTask}
-										variant="warning"
-										onClick={deselectToDo}
-									>
+									<Button value={currentTask} variant='warning' onClick={deselectToDo}>
 										Deselect
 									</Button>
 								</InputGroup.Append>
 								<InputGroup.Append>
-									<Button variant="danger" onClick={deleteCurrentTask}>
+									<Button variant='danger' onClick={deleteCurrentTask}>
 										Delete
 									</Button>
 								</InputGroup.Append>
