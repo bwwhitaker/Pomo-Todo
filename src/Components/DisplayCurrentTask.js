@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
@@ -17,7 +17,7 @@ function DisplayCurrentTask() {
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
 	function deleteCurrentTask() {
-		var resetTask = 'Pick a new task.';
+		var resetTask = '';
 		localStorage.setItem('currentTask', JSON.stringify(resetTask));
 		//setCurrentTask('Pick a new task.');
 		TaskStore.update((s) => {
@@ -32,15 +32,17 @@ function DisplayCurrentTask() {
 	function completeCurrentTask() {
 		const newTaskCount = completedTaskCount + 1;
 		TaskStore.update((s) => {
-			s.completedTaskCount += 1;
+			s.completedTaskCount = newTaskCount;
 		});
 		var completedOn = new Date().toISOString();
 		const updateCompletedTodos = completedList.push({
-			todo: currentTask,
-			completed_on: completedOn,
+			todo: currentTask.todo,
+			completedOn: completedOn,
+			createdOn: currentTask.createdOn,
 			status: 'completed',
 			category: '',
 			order: 0,
+			dueBy: currentTask.dueBy,
 		});
 		console.log(updateCompletedTodos);
 		console.log(completedList);
@@ -55,12 +57,15 @@ function DisplayCurrentTask() {
 	function deselectToDo() {
 		console.log('sending back');
 		console.log(currentTask);
-		var createdOn = new Date().toISOString();
-		const updatedTodos = todoList.push({
-			todo: currentTask,
-			created_on: createdOn,
+		const updateTodoList = {
+			todo: currentTask.todo,
+			createdOn: currentTask.createdOn,
 			status: 'scheduled',
-		});
+			category: '',
+			order: 0,
+			dueBy: currentTask.dueBy,
+		};
+		const updatedTodos = todoList.push(updateTodoList);
 		//Length of New Items List
 		console.log(updatedTodos);
 		console.log(todoList);
@@ -71,6 +76,13 @@ function DisplayCurrentTask() {
 		deleteCurrentTask();
 	}
 
+	let displayCurrentTask;
+	if (currentTask === null) {
+		displayCurrentTask = '';
+	} else {
+		displayCurrentTask = currentTask.todo;
+	}
+
 	return (
 		<div style={{ display: showCurrentTask }}>
 			<Table striped size='sm' variant='dark'>
@@ -79,8 +91,7 @@ function DisplayCurrentTask() {
 						<td>
 							<img src={tomato} alt='Tomato' />
 						</td>
-						<td className='left'>Current Task:</td>
-						<td className='left'>{currentTask}</td>
+						<td className='left'>Current Task: {displayCurrentTask} </td>
 						<td className='right'>
 							<InputGroup>
 								<InputGroup.Prepend>
