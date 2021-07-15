@@ -10,15 +10,18 @@ import { TaskStore } from '../TaskStore';
 function ToDo() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
 	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
-
 	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
 
 	useEffect(() => {
 		if (localStorage.length > 0) {
-			console.log('got it');
 			console.log(todoListReadyToRender);
 			console.log(showCurrent);
+			console.log('got it');
 		} else {
+			localStorage.setItem('todoListReady', JSON.stringify('yes'));
+			TaskStore.update((s) => {
+				s.todoListReady = JSON.stringify('yes');
+			});
 			var createdOn = new Date().toISOString();
 			var initializeTodoList = {
 				todo: 'Nothing to do!',
@@ -37,10 +40,7 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.completedTaskCount = 0;
 			});
-			localStorage.setItem('todoListReady', JSON.stringify('yes'));
-			TaskStore.update((s) => {
-				s.todoListReady = JSON.stringify('yes');
-			});
+
 			localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 			TaskStore.update((s) => {
 				s.showCurrentTask = JSON.stringify('none');
@@ -199,6 +199,7 @@ function ToDo() {
 				</InputGroup.Append>
 			</InputGroup>
 			<p></p>
+
 			{todoListReadyToRender === 'yes' && (
 				<div key='toDoList'>
 					{tasksToDo.length === 1 && (
@@ -210,49 +211,51 @@ function ToDo() {
 							</tbody>
 						</Table>
 					)}
-					<Table striped size='sm' variant='dark'>
-						{tasksToDo
-							.map((todo) => (
-								<tbody>
-									<tr>
-										<td>
-											<img src={tomato} alt='Tomato' />
-										</td>
-										<td className='left'>{todo.todo}</td>
-										<td className='right'>
-											<InputGroup className='right'>
-												<InputGroup.Prepend>
-													<Button
-														variant='success'
-														sz='sm'
-														value={todo.created_on}
-														onClick={() =>
-															startScheduledForLaterTask(
-																todo.createdOn,
-																todo.todo,
-																todo.createdOn,
-																todo.category,
-																todo.dueBy,
-																todo.order
-															)
-														}
-													>
-														Select
-													</Button>
-												</InputGroup.Prepend>
-												<InputGroup.Append>
-													<Button variant='danger' onClick={() => removeTask(todo.createdOn)}>
-														Delete
-													</Button>
-												</InputGroup.Append>
-											</InputGroup>
-										</td>
-									</tr>
-								</tbody>
-							))
-							//To Remove the Nothing To Do Statement
-							.slice(1)}
-					</Table>
+					{tasksToDo.length >= 2 && (
+						<Table striped size='sm' variant='dark'>
+							{tasksToDo
+								.map((todo) => (
+									<tbody>
+										<tr>
+											<td>
+												<img src={tomato} alt='Tomato' />
+											</td>
+											<td className='left'>{todo.todo}</td>
+											<td className='right'>
+												<InputGroup className='right'>
+													<InputGroup.Prepend>
+														<Button
+															variant='success'
+															sz='sm'
+															value={todo.created_on}
+															onClick={() =>
+																startScheduledForLaterTask(
+																	todo.createdOn,
+																	todo.todo,
+																	todo.createdOn,
+																	todo.category,
+																	todo.dueBy,
+																	todo.order
+																)
+															}
+														>
+															Select
+														</Button>
+													</InputGroup.Prepend>
+													<InputGroup.Append>
+														<Button variant='danger' onClick={() => removeTask(todo.createdOn)}>
+															Delete
+														</Button>
+													</InputGroup.Append>
+												</InputGroup>
+											</td>
+										</tr>
+									</tbody>
+								))
+								//To Remove the Nothing To Do Statement
+								.slice(1)}
+						</Table>
+					)}
 				</div>
 			)}
 		</div>
