@@ -146,7 +146,7 @@ function ToDo() {
 	function removeTask(taskIdentifier) {
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
-			return task.created_on === taskIdentifier;
+			return task.createdOn === taskIdentifier;
 		});
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
@@ -165,11 +165,12 @@ function ToDo() {
 		setScheduledTaskAsCurrentTask(taskIdentifier, taskName, taskCreatedOn, taskCategory, taskDueBy, taskOrder);
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
-			return task.created_on === taskIdentifier;
+			return task.createdOn === taskIdentifier;
 		});
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
 		}
+		console.log(newTaskList);
 		TaskStore.update((s) => {
 			s.todoList = JSON.stringify(newTaskList);
 		});
@@ -227,6 +228,7 @@ function ToDo() {
 														value={todo.created_on}
 														onClick={() =>
 															startScheduledForLaterTask(
+																todo.createdOn,
 																todo.todo,
 																todo.createdOn,
 																todo.category,
@@ -239,7 +241,7 @@ function ToDo() {
 													</Button>
 												</InputGroup.Prepend>
 												<InputGroup.Append>
-													<Button variant='danger' onClick={() => removeTask(todo.created_on)}>
+													<Button variant='danger' onClick={() => removeTask(todo.createdOn)}>
 														Delete
 													</Button>
 												</InputGroup.Append>
