@@ -24,6 +24,10 @@ body {
 	background: linear-gradient(45deg, #ac031f, #ac031f);
 }
 
+.card-title {
+	font-size: 16px;
+}
+
 .card {
 	border-radius: 5px;
 	-webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
@@ -40,18 +44,18 @@ body {
 	padding-left: 12px;
 }
 
-.todo-card i {
-	font-size: 26px;
+.todo-card {
+	font-size: 14px;
 }
 
 .created-info {
 	padding-top: 8px;
-
 	font-size: 12px;
 }
 
 .f-left {
 	float: left;
+	text-align: left;
 }
 
 .f-right {

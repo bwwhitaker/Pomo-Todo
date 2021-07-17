@@ -11,13 +11,19 @@ import { faTrashAlt, faLaptopCode } from '@fortawesome/free-solid-svg-icons';
 
 const sampleTodo = {
 	todo: 'Eat Pie',
-	createdOn: 'June 1, 2021',
+	createdOn: '2021-07-15T06:12:04.325Z',
 	status: 'scheduled',
 	category: 'Food',
 	dueBy: 'August 1, 2021',
 	order: 1,
-	notes: 'We need to get a real good pie.',
+	notes: 'We need to get a real good pie. One that has wonderfully delicious apples!',
 };
+
+var createdUtcDate = sampleTodo.createdOn;
+var showCreatedLocalDate = new Date(createdUtcDate).toLocaleDateString();
+
+var dueUtcDate = sampleTodo.dueBy;
+var showDueLocalDate = new Date(dueUtcDate).toLocaleDateString();
 
 function ToDoCard() {
 	return (
@@ -25,7 +31,9 @@ function ToDoCard() {
 			<div class='card bg-c-blue todo-card'>
 				<div className='card-block'>
 					<Card.Title>
-						<span className='f-left'>{sampleTodo.todo}</span>
+						<span className='f-left card-title'>
+							{sampleTodo.todo} - {showDueLocalDate} ({sampleTodo.category})
+						</span>
 						<span className='f-right'>
 							<InputGroup>
 								<InputGroup.Prepend>
@@ -45,20 +53,11 @@ function ToDoCard() {
 					<Card.Body>
 						<Row className='cardbody-top-padding'>
 							<Col sm={8}>
-								<span className='f-left'> Due: {sampleTodo.dueBy}</span>
-							</Col>
-							<Col sm={4}>
-								<span className='f-right'>Category: {sampleTodo.category}</span>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
 								<span className='f-left'>{sampleTodo.notes}</span>
 							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-left created-info'>Created: {sampleTodo.createdOn}</span>
+
+							<Col sm={4}>
+								<span className='f-right created-info'>Created: {showCreatedLocalDate} </span>
 							</Col>
 						</Row>
 					</Card.Body>
@@ -68,48 +67,9 @@ function ToDoCard() {
 			<div class='card bg-c-yellow todo-card'>
 				<div className='card-block'>
 					<Card.Title>
-						<span className='f-left'>{sampleTodo.todo}</span>
-						<span className='f-right'>
-							<InputGroup>
-								<InputGroup.Prepend>
-									<Button variant='success'>
-										<FontAwesomeIcon alt='Select' aria-label='Select' icon={faLaptopCode} />
-									</Button>
-								</InputGroup.Prepend>
-								<InputGroup.Append>
-									<Button variant='danger'>
-										<FontAwesomeIcon alt='Delete' aria-label='Delete' icon={faTrashAlt} />
-									</Button>
-								</InputGroup.Append>
-							</InputGroup>
+						<span className='f-left card-title'>
+							{sampleTodo.todo} - {sampleTodo.dueBy} ({sampleTodo.category})
 						</span>
-					</Card.Title>
-					<Card.Body>
-						<Row className='cardbody-top-padding'>
-							<Col sm={8}>
-								<span className='f-left'> Due: {sampleTodo.dueBy}</span>
-							</Col>
-							<Col sm={4}>
-								<span className='f-right'>Category: {sampleTodo.category}</span>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-left'>{}</span>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-left created-info'>Created: {sampleTodo.createdOn}</span>
-							</Col>
-						</Row>
-					</Card.Body>
-				</div>
-			</div>
-			<div class='card bg-c-red todo-card'>
-				<div className='card-block'>
-					<Card.Title>
-						<span className='f-left'>{sampleTodo.todo}</span>
 						<span className='f-right'>
 							<InputGroup>
 								<InputGroup.Prepend>
@@ -129,20 +89,46 @@ function ToDoCard() {
 					<Card.Body>
 						<Row className='cardbody-top-padding'>
 							<Col sm={8}>
-								<span className='f-left'> Due: {sampleTodo.dueBy}</span>
+								<span className='f-left'>{sampleTodo.notes}</span>
 							</Col>
+
 							<Col sm={4}>
-								<span className='f-right'>Category: {sampleTodo.category}</span>
+								<span className='f-right created-info'>Created: {sampleTodo.createdOn}</span>
 							</Col>
 						</Row>
-						<Row>
-							<Col>
-								<span className='f-left'>{}</span>
+					</Card.Body>
+				</div>
+			</div>
+			<div class='card bg-c-red todo-card'>
+				<div className='card-block'>
+					<Card.Title>
+						<span className='f-left card-title'>
+							{sampleTodo.todo} - {sampleTodo.dueBy} ({sampleTodo.category})
+						</span>
+						<span className='f-right'>
+							<InputGroup>
+								<InputGroup.Prepend>
+									<Button variant='success'>
+										<FontAwesomeIcon alt='Select' aria-label='Select' icon={faLaptopCode} />
+									</Button>
+								</InputGroup.Prepend>
+
+								<InputGroup.Append>
+									<Button variant='danger'>
+										<FontAwesomeIcon alt='Delete' aria-label='Delete' icon={faTrashAlt} />
+									</Button>
+								</InputGroup.Append>
+							</InputGroup>
+						</span>
+					</Card.Title>
+					<Card.Body>
+						<Row className='cardbody-top-padding'>
+							<Col sm={8}>
+								<span className='f-left'>{sampleTodo.notes}</span>
 							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-left created-info'>Created: {sampleTodo.createdOn}</span>
+
+							<Col sm={4}>
+								<span className='f-right created-info'>Created: {sampleTodo.createdOn}</span>
 							</Col>
 						</Row>
 					</Card.Body>

@@ -6,7 +6,13 @@ import '../App.css';
 import { TaskStore } from '../TaskStore';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee, faLaptopCode, faPauseCircle, faPlayCircle, faBackspace } from '@fortawesome/free-solid-svg-icons';
+import {
+	faCoffee,
+	faHourglassStart,
+	faPauseCircle,
+	faPlayCircle,
+	faBackspace,
+} from '@fortawesome/free-solid-svg-icons';
 
 function Timer() {
 	const timerEndTime = TaskStore.useState((s) => s.timerEndTime);
@@ -112,7 +118,7 @@ function Timer() {
 			<InputGroup>
 				<InputGroup.Prepend>
 					<Button aria-label='work' onClick={timerStartWork} variant='success' sz='sm'>
-						<FontAwesomeIcon icon={faLaptopCode} />
+						<FontAwesomeIcon icon={faHourglassStart} />
 					</Button>
 				</InputGroup.Prepend>
 				<InputGroup.Append>
