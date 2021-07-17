@@ -5,6 +5,9 @@ import FormControl from 'react-bootstrap/FormControl';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee, faLaptopCode, faPauseCircle, faPlayCircle, faBackspace } from '@fortawesome/free-solid-svg-icons';
+
 function Timer() {
 	const timerEndTime = TaskStore.useState((s) => s.timerEndTime);
 	const timerValue = TaskStore.useState((s) => s.timerValue);
@@ -73,7 +76,12 @@ function Timer() {
 	formattedTime += (seconds < 10 ? ':0' : ':') + seconds;
 	formattedTime += '.' + tenthsOfSeconds;
 
-	var pauseButtonLabel = timerRunning === true ? 'Pause' : 'Resume';
+	var pauseButtonLabel =
+		timerRunning === true ? (
+			<FontAwesomeIcon aria-label='pause' icon={faPauseCircle} />
+		) : (
+			<FontAwesomeIcon aria-label='resume' icon={faPlayCircle} />
+		);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -103,13 +111,13 @@ function Timer() {
 		<div>
 			<InputGroup>
 				<InputGroup.Prepend>
-					<Button onClick={timerStartWork} variant='success' sz='sm'>
-						Work
+					<Button aria-label='work' onClick={timerStartWork} variant='success' sz='sm'>
+						<FontAwesomeIcon icon={faLaptopCode} />
 					</Button>
 				</InputGroup.Prepend>
 				<InputGroup.Append>
-					<Button onClick={timerStartBreak} variant='danger' sz='sm'>
-						Break
+					<Button aria-label='break' onClick={timerStartBreak} variant='danger' sz='sm'>
+						<FontAwesomeIcon icon={faCoffee} />
 					</Button>
 				</InputGroup.Append>
 
@@ -122,8 +130,8 @@ function Timer() {
 					</div>
 				</InputGroup.Append>
 				<InputGroup.Append>
-					<Button onClick={resetTimer} variant='secondary' sz='sm'>
-						Reset
+					<Button aria-label='reset' onClick={resetTimer} variant='secondary' sz='sm'>
+						<FontAwesomeIcon icon={faBackspace} />
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>

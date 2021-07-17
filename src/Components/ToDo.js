@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import tomato from '../Media/tomato-small.png';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
+import ToDoCard from './ToDoCard';
 
 function ToDo() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
@@ -258,6 +259,7 @@ function ToDo() {
 					)}
 				</div>
 			)}
+			<ToDoCard />
 		</div>
 	);
 }

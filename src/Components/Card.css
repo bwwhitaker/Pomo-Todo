@@ -1,0 +1,63 @@
+body {
+	margin-top: 20px;
+	background: #fafafa;
+}
+.todo-card {
+	color: #fff;
+}
+
+.bg-c-blue {
+	background: linear-gradient(45deg, #4fa1ff, #4fa1ff);
+	color: black;
+}
+
+.bg-c-green {
+	background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+
+.bg-c-yellow {
+	background: linear-gradient(45deg, hsl(51, 100%, 49%), hsl(51, 100%, 49%));
+	color: black;
+}
+
+.bg-c-red {
+	background: linear-gradient(45deg, #ac031f, #ac031f);
+}
+
+.card {
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+	box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+	border: none;
+	margin-bottom: 5px;
+	-webkit-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.card .card-block {
+	padding-top: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+}
+
+.todo-card i {
+	font-size: 26px;
+}
+
+.created-info {
+	padding-top: 8px;
+
+	font-size: 12px;
+}
+
+.f-left {
+	float: left;
+}
+
+.f-right {
+	float: right;
+}
+
+.cardbody-top-padding {
+	margin-top: 6px;
+}
