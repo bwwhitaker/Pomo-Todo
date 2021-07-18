@@ -7,7 +7,7 @@
 	justify-content: center;
 	font-size: calc(10px + 1vmin);
 	color: white;
-	padding-top: 5vh;
+	padding-top: 2vh;
 	padding-left: 5vmin;
 	padding-right: 5vmin;
 }
@@ -31,4 +31,8 @@
 .card {
 	background-color: #282c34;
 	color: black;
+}
+
+.bar {
+	padding-bottom: 1px !important;
 }

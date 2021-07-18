@@ -27,39 +27,35 @@ function ToDoCard({ todo }) {
 	var showDueLocalDate = new Date(dueUtcDate).toLocaleDateString();
 	return (
 		<div>
-			<div class='card bg-c-yellow '>
-				<div>
+			<div class='card bg-c-blue todo-card'>
+				<div className='card-block'>
+					<div>
+						<Card.Title>
+							<span className='f-left card-title'>
+								{todo.todo} - {todo.dueBy} ({todo.category})
+							</span>
+							<span className='f-right'>
+								<ButtonGroup size='sm' className='todo-card-buttons'>
+									<Button variant='success'>
+										<FontAwesomeIcon alt='Select' aria-label='Select' icon={faLaptopCode} />
+									</Button>
+									<Button variant='warning'>
+										<FontAwesomeIcon alt='Edit' aria-label='Edit' icon={faPencilAlt} />
+									</Button>
+									<Button variant='danger'>
+										<FontAwesomeIcon alt='Delete' aria-label='Delete' icon={faTrashAlt} />
+									</Button>
+								</ButtonGroup>
+							</span>
+						</Card.Title>
+						<Card.Subtitle>
+							<span className='f-right created-info'>Created: {todo.createdOn} </span>
+						</Card.Subtitle>
+					</div>
 					<Card.Body>
-						<Row>
-							<Col>
-								<span className='f-left card-title'>
-									{todo.todo} - {todo.dueBy} ({todo.category})
-								</span>
-							</Col>
-							<Col>
-								<span className='f-right'>
-									<ButtonGroup size='sm'>
-										<Button variant='success' className='icon'>
-											<FontAwesomeIcon alt='Select' aria-label='Select' icon={faLaptopCode} />
-										</Button>
-										<Button variant='warning' className='icon'>
-											<FontAwesomeIcon alt='Edit' aria-label='Edit' icon={faPencilAlt} />
-										</Button>
-										<Button variant='danger' className='icon'>
-											<FontAwesomeIcon alt='Delete' aria-label='Delete' icon={faTrashAlt} />
-										</Button>
-									</ButtonGroup>
-								</span>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-left notes'>{todo.notes}</span>
-							</Col>
-						</Row>
-						<Row>
-							<Col>
-								<span className='f-right created-info'>Created: {todo.createdOn}</span>
+						<Row className='cardbody-top-padding'>
+							<Col xs={8}>
+								<span className='f-left'>{todo.notes}</span>
 							</Col>
 						</Row>
 					</Card.Body>

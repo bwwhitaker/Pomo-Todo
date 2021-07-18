@@ -1,4 +1,4 @@
-import { React, useEffect } from 'react';
+import { React } from 'react';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
@@ -43,6 +43,7 @@ function DisplayCurrentTask() {
 			category: '',
 			order: 0,
 			dueBy: currentTask.dueBy,
+			notes: '',
 		});
 		console.log(updateCompletedTodos);
 		console.log(completedList);
@@ -64,6 +65,7 @@ function DisplayCurrentTask() {
 			category: '',
 			order: 0,
 			dueBy: currentTask.dueBy,
+			notes: '',
 		};
 		const updatedTodos = todoList.push(updateTodoList);
 		//Length of New Items List

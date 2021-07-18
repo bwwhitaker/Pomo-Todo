@@ -25,7 +25,8 @@ body {
 }
 
 .card-title {
-	font-size: 16px;
+	font-size: 14px;
+	font-weight: bold;
 }
 
 .card {
@@ -38,19 +39,12 @@ body {
 	transition: all 0.3s ease-in-out;
 }
 
-.card .card-block {
-	padding-top: 12px;
-	padding-right: 12px;
-	padding-left: 12px;
-}
-
-.todo-card {
-	font-size: 14px;
+.notes {
+	font-size: 12px;
 }
 
 .created-info {
-	padding-top: 8px;
-	font-size: 12px;
+	font-size: 10px;
 }
 
 .f-left {
@@ -62,6 +56,6 @@ body {
 	float: right;
 }
 
-.cardbody-top-padding {
-	margin-top: 6px;
+.icon {
+	padding: 2px;
 }

@@ -28,6 +28,7 @@ function ToDo() {
 				todo: 'Nothing to do!',
 				createdOn: createdOn,
 				status: 'scheduled',
+				notes: '',
 				category: '',
 				dueBy: '',
 				order: 0,
@@ -56,6 +57,7 @@ function ToDo() {
 					todo: 'Nothing completed!',
 					createdOn: createdOn,
 					status: 'completed',
+					notes: '',
 					category: '',
 					dueBy: '',
 					order: 0,
@@ -78,6 +80,7 @@ function ToDo() {
 				createdOn: createdOn,
 				category: '',
 				status: 'current',
+				notes: '',
 				dueBy: '',
 				order: '',
 			};
@@ -102,6 +105,7 @@ function ToDo() {
 			status: 'current',
 			dueBy: taskDueBy,
 			order: taskOrder,
+			notes: '',
 		};
 		console.log(activeTask);
 		TaskStore.update((s) => {
@@ -129,6 +133,7 @@ function ToDo() {
 				category: '',
 				order: 0,
 				dueBy: '',
+				notes: '',
 			};
 			const newItems = tasksToDo.push(newItem);
 			//Length of New Items List
@@ -259,7 +264,7 @@ function ToDo() {
 					)}
 				</div>
 			)}
-			<ToDoCard />
+			<div>{tasksToDo.map((todo) => <ToDoCard todo={todo} />).slice(1)}</div>
 		</div>
 	);
 }

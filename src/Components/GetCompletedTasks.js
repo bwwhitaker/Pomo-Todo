@@ -1,5 +1,4 @@
 import React from 'react';
-import tomato from '../Media/tomato-small.png';
 import Button from 'react-bootstrap/Button';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
@@ -10,9 +9,9 @@ function GetCompletedTasks() {
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
 	return (
-		<div className='right'>
+		<div>
 			<p>
-				<Button variant='dark'>
+				<Button variant='secondary' disabled>
 					Completed: {completedTaskCount} <FontAwesomeIcon icon={faClipboardCheck} />
 				</Button>
 			</p>
