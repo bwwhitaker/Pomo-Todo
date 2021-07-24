@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import '../App.css';
@@ -213,47 +214,57 @@ function ToDoCard({ todo }) {
 							</Col>
 							<Col>
 								<span className='f-right'>
-									<FontAwesomeIcon
-										className='icon'
-										alt='Select'
-										aria-label='Select'
-										icon={faLaptopCode}
-										onClick={() =>
-											setScheduledTaskAsCurrentTask(
-												todo.createdOn,
-												todo.todo,
-												todo.createdOn,
-												todo.category,
-												todo.dueBy,
-												todo.order
-											)
-										}
-									/>
-									<FontAwesomeIcon className='icon' alt='Edit' aria-label='Edit' icon={faPencilAlt} />
-									<FontAwesomeIcon
-										className='icon'
-										alt='Complete'
-										aria-label='Complete'
-										icon={faCheckSquare}
-										onClick={() =>
-											completeScheduledTaask(
-												todo.createdOn,
-												todo.todo,
-												todo.createdOn,
-												todo.category,
-												todo.dueBy,
-												todo.order
-											)
-										}
-									/>
-									<FontAwesomeIcon
-										className='icon'
-										alt='Delete'
-										aria-label='Delete'
-										onClick={() => handleOpenDeleteDialog(todo.createdOn)}
-										icon={faTrashAlt}
-										//onClick={() => removeTask(todo.createdOn)}
-									/>
+									<ButtonGroup>
+										<Button variant='dark'>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Select'
+												aria-label='Select'
+												icon={faLaptopCode}
+												onClick={() =>
+													setScheduledTaskAsCurrentTask(
+														todo.createdOn,
+														todo.todo,
+														todo.createdOn,
+														todo.category,
+														todo.dueBy,
+														todo.order
+													)
+												}
+											/>
+										</Button>
+										<Button variant='dark'>
+											<FontAwesomeIcon className='icon' alt='Edit' aria-label='Edit' icon={faPencilAlt} />
+										</Button>
+										<Button variant='dark'>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Complete'
+												aria-label='Complete'
+												icon={faCheckSquare}
+												onClick={() =>
+													completeScheduledTaask(
+														todo.createdOn,
+														todo.todo,
+														todo.createdOn,
+														todo.category,
+														todo.dueBy,
+														todo.order
+													)
+												}
+											/>
+										</Button>
+										<Button variant='dark'>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Delete'
+												aria-label='Delete'
+												onClick={() => handleOpenDeleteDialog(todo.createdOn)}
+												icon={faTrashAlt}
+												//onClick={() => removeTask(todo.createdOn)}
+											/>
+										</Button>
+									</ButtonGroup>
 								</span>
 							</Col>
 						</Row>

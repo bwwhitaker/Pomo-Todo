@@ -12,7 +12,8 @@ function ToDo() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
 	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
 	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
-	const inputEl = useRef(null);
+	const inputTodo = useRef(null);
+	const inputDueBy = useRef(null);
 	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
 	useEffect(() => {
@@ -67,7 +68,7 @@ function ToDo() {
 	};
 
 	function setAsCurrentTask() {
-		if (inputEl.current.value === '') {
+		if (inputTodo.current.value === '') {
 			setState({ openBlankFormWarning: true, ...setState });
 		} else {
 			if (currentTask !== '') {
@@ -75,7 +76,7 @@ function ToDo() {
 			} else {
 				var createdOn = new Date().toISOString();
 				const enteredTask = {
-					todo: inputEl.current.value,
+					todo: inputTodo.current.value,
 					createdOn: createdOn,
 					category: '',
 					status: 'current',
@@ -91,20 +92,20 @@ function ToDo() {
 					s.showCurrentTask = JSON.stringify('block');
 				});
 				localStorage.setItem('showCurrentTask', JSON.stringify('block'));
-				inputEl.current.focus();
-				inputEl.current.value = '';
+				inputTodo.current.focus();
+				inputTodo.current.value = '';
 			}
 		}
 	}
 
 	function scheduleForLater() {
-		if (inputEl.current.value === '') {
+		if (inputTodo.current.value === '') {
 			setState({ openBlankFormWarning: true, ...setState });
 		} else {
 			console.log('schedule for later');
 			const createdOn = new Date().toISOString();
 			console.log(createdOn);
-			const newTodo = inputEl.current.value;
+			const newTodo = inputTodo.current.value;
 			//Update to source item from Entry Form as the item. Also clear the entry form.
 			const newItem = {
 				todo: newTodo,
@@ -122,8 +123,8 @@ function ToDo() {
 			TaskStore.update((s) => {
 				s.todoList = JSON.stringify(tasksToDo);
 			});
-			inputEl.current.focus();
-			inputEl.current.value = '';
+			inputTodo.current.focus();
+			inputTodo.current.value = '';
 		}
 	}
 
@@ -131,11 +132,18 @@ function ToDo() {
 		<div>
 			<InputGroup>
 				<FormControl
-					ref={inputEl}
+					ref={inputTodo}
 					placeholder='Task'
 					aria-label='Task Input'
 					aria-describedby='basic-addon2'
 					autoFocus={true}
+				/>
+				<FormControl
+					ref={inputDueBy}
+					placeholder='Task'
+					aria-label='Due By '
+					aria-describedby='basic-addon2'
+					autoFocus={false}
 				/>
 				<InputGroup.Append>
 					<Button variant='outline-secondary' onClick={setAsCurrentTask}>

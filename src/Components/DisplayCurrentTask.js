@@ -14,6 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function DisplayCurrentTask() {
 	const [state, setState] = useState({
@@ -175,35 +176,44 @@ function DisplayCurrentTask() {
 									</Col>
 									<Col>
 										<span className='f-right'>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Select'
-												aria-label='Select'
-												icon={faCalendarMinus}
-												onClick={deselectToDo}
-											/>
-
-											<FontAwesomeIcon
-												className='icon'
-												alt='Edit'
-												aria-label='Edit'
-												icon={faPencilAlt}
-												onClick={logClicked}
-											/>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Complete'
-												aria-label='Complete'
-												icon={faCheckSquare}
-												onClick={completeCurrentTask}
-											/>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Delete'
-												aria-label='Delete'
-												icon={faTrashAlt}
-												onClick={handleOpenDeleteDialog}
-											/>
+											<ButtonGroup>
+												<Button variant='dark'>
+													<FontAwesomeIcon
+														className='icon'
+														alt='Select'
+														aria-label='Select'
+														icon={faCalendarMinus}
+														onClick={deselectToDo}
+													/>
+												</Button>
+												<Button variant='dark'>
+													<FontAwesomeIcon
+														className='icon'
+														alt='Edit'
+														aria-label='Edit'
+														icon={faPencilAlt}
+														onClick={logClicked}
+													/>
+												</Button>
+												<Button variant='dark'>
+													<FontAwesomeIcon
+														className='icon'
+														alt='Complete'
+														aria-label='Complete'
+														icon={faCheckSquare}
+														onClick={completeCurrentTask}
+													/>
+												</Button>
+												<Button variant='dark'>
+													<FontAwesomeIcon
+														className='icon'
+														alt='Delete'
+														aria-label='Delete'
+														icon={faTrashAlt}
+														onClick={handleOpenDeleteDialog}
+													/>
+												</Button>
+											</ButtonGroup>
 										</span>
 									</Col>
 								</Row>
