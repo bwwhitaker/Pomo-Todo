@@ -1,12 +1,86 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Table from 'react-bootstrap/Table';
 import '../App.css';
-import tomato from '../Media/tomato-small.png';
 import { TaskStore } from '../TaskStore';
+import Card from 'react-bootstrap/Card';
+import '../App.css';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import './Card.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt, faPencilAlt, faCalendarMinus, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 function DisplayCurrentTask() {
+	const [state, setState] = useState({
+		openDeleteDialog: false,
+		selectedTaskIdentifier: '',
+	});
+	const { openDeleteDialog } = state;
+
+	const handleOpenDeleteDialog = (taskIdentifier) => {
+		setState({ ...state, selectedTaskIdentifier: taskIdentifier });
+		setState({ ...state, openDeleteDialog: true });
+	};
+
+	const handleConfirmCloseDeleteDialog = () => {
+		setState({ ...state, openDeleteDialog: false });
+		deleteCurrentTask();
+	};
+	const handleCancelCloseDeleteDialog = () => {
+		setState({ ...state, openDeleteDialog: false });
+	};
+
+	function cleanDueDate(todo) {
+		if (todo === null) {
+			let cleanedDate = '';
+			return cleanedDate;
+		}
+		if (todo.dueBy === '') {
+			let cleanedDate = '';
+			return cleanedDate;
+		} else {
+			let cleanedDate = '- ' + new Date(todo.dueBy).toLocaleString();
+			return cleanedDate;
+		}
+	}
+
+	function cleanCategory(todo) {
+		if (todo === null) {
+			let cleanedCategory = '';
+			return cleanedCategory;
+		}
+		if (todo.category === '') {
+			let cleanedCategory = '';
+			return cleanedCategory;
+		} else {
+			let cleanedCategory = '(' + todo.category + ')';
+			return cleanedCategory;
+		}
+	}
+
+	function cleanCreatedDate(todo) {
+		if (todo === null) {
+			let cleanedDate = '';
+			return cleanedDate;
+		}
+		if (todo.createdOn === '') {
+			let cleanedDate = '';
+			return cleanedDate;
+		} else {
+			let cleanedDate = 'Created: ' + new Date(todo.createdOn).toLocaleString();
+			return cleanedDate;
+		}
+	}
+
+	function logClicked() {
+		console.log('clicked');
+	}
+
 	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
 	const showCurrentTask = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
@@ -78,44 +152,98 @@ function DisplayCurrentTask() {
 		deleteCurrentTask();
 	}
 
-	let displayCurrentTask;
-	if (currentTask === null) {
-		displayCurrentTask = '';
-	} else {
-		displayCurrentTask = currentTask.todo;
-	}
+	var todo = JSON.parse(TaskStore.useState((s) => s.currentTask));
+
+	var localeCreatedDate = cleanCreatedDate(todo);
+
+	var localeDueDate = cleanDueDate(todo);
+
+	var displayCategory = cleanCategory(todo);
 
 	return (
-		<div style={{ display: showCurrentTask }}>
-			<Table striped size='sm' variant='dark'>
-				<tbody>
-					<tr>
-						<td>
-							<img src={tomato} alt='Tomato' />
-						</td>
-						<td className='left'>Current Task: {displayCurrentTask} </td>
-						<td className='right'>
-							<InputGroup>
-								<InputGroup.Prepend>
-									<Button variant='success' sz='sm' onClick={completeCurrentTask}>
-										Complete
-									</Button>
-								</InputGroup.Prepend>
-								<InputGroup.Append>
-									<Button value={currentTask} variant='warning' onClick={deselectToDo}>
-										Deselect
-									</Button>
-								</InputGroup.Append>
-								<InputGroup.Append>
-									<Button variant='danger' onClick={deleteCurrentTask}>
-										Delete
-									</Button>
-								</InputGroup.Append>
-							</InputGroup>
-						</td>
-					</tr>
-				</tbody>
-			</Table>
+		<div>
+			{showCurrentTask === 'block' && (
+				<div style={{ display: showCurrentTask }}>
+					<div class='card bg-c-green '>
+						<div>
+							<Card.Body>
+								<Row>
+									<Col>
+										<span className='f-left card-title'>
+											{todo.todo} {localeDueDate} {displayCategory}
+										</span>
+									</Col>
+									<Col>
+										<span className='f-right'>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Select'
+												aria-label='Select'
+												icon={faCalendarMinus}
+												onClick={deselectToDo}
+											/>
+
+											<FontAwesomeIcon
+												className='icon'
+												alt='Edit'
+												aria-label='Edit'
+												icon={faPencilAlt}
+												onClick={logClicked}
+											/>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Complete'
+												aria-label='Complete'
+												icon={faCheckSquare}
+												onClick={completeCurrentTask}
+											/>
+											<FontAwesomeIcon
+												className='icon'
+												alt='Delete'
+												aria-label='Delete'
+												icon={faTrashAlt}
+												onClick={handleOpenDeleteDialog}
+											/>
+										</span>
+									</Col>
+								</Row>
+								<Row>
+									<Col>
+										<span className='f-left notes'>{todo.notes}</span>
+									</Col>
+								</Row>
+								<Row>
+									<Col>
+										<span className='f-right created-info'>{localeCreatedDate}</span>
+									</Col>
+								</Row>
+							</Card.Body>
+						</div>
+					</div>
+				</div>
+			)}
+
+			<Dialog
+				open={openDeleteDialog}
+				onClose={handleCancelCloseDeleteDialog}
+				aria-labelledby='alert-dialog-title'
+				aria-describedby='alert-dialog-description'
+			>
+				<DialogTitle id='alert-dialog-title'>{'Confirm Delete!'}</DialogTitle>
+				<DialogContent>
+					<DialogContentText id='alert-dialog-description'>
+						Please confirm Delete as this cannot be undone.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCancelCloseDeleteDialog} color='primary'>
+						Cancel
+					</Button>
+					<Button onClick={handleConfirmCloseDeleteDialog} color='primary' autoFocus>
+						Confirm
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</div>
 	);
 }

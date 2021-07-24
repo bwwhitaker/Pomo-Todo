@@ -12,7 +12,7 @@ body {
 }
 
 .bg-c-green {
-	background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+	background: linear-gradient(45deg, #05a813, #05a813);
 }
 
 .bg-c-yellow {
@@ -58,4 +58,5 @@ body {
 
 .icon {
 	padding: 2px;
+	cursor: pointer;
 }
