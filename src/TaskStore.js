@@ -10,4 +10,6 @@ export const TaskStore = new Store({
 	timerEndTime: 0,
 	timerValue: 0,
 	taskToBeDeletedIdentifier: '',
+	taskToBeEditedIdentifier: '',
+	taskDetailsForEditing: {},
 });

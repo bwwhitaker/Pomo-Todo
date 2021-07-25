@@ -115,10 +115,10 @@ function DisplayCurrentTask() {
 			completedOn: completedOn,
 			createdOn: currentTask.createdOn,
 			status: 'completed',
-			category: '',
-			order: 0,
+			category: currentTask.category,
+			order: currentTask.order,
 			dueBy: currentTask.dueBy,
-			notes: '',
+			notes: currentTask.notes,
 		});
 		console.log(updateCompletedTodos);
 		console.log(completedList);
@@ -137,10 +137,10 @@ function DisplayCurrentTask() {
 			todo: currentTask.todo,
 			createdOn: currentTask.createdOn,
 			status: 'scheduled',
-			category: '',
-			order: 0,
+			category: currentTask.category,
+			order: currentTask.order,
 			dueBy: currentTask.dueBy,
-			notes: '',
+			notes: currentTask.notes,
 		};
 		const updatedTodos = todoList.push(updateTodoList);
 		//Length of New Items List

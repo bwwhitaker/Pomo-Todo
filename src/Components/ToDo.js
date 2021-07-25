@@ -13,7 +13,6 @@ function ToDo() {
 	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
 	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
 	const inputTodo = useRef(null);
-	const inputDueBy = useRef(null);
 	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
 
 	useEffect(() => {
@@ -138,13 +137,6 @@ function ToDo() {
 					aria-describedby='basic-addon2'
 					autoFocus={true}
 				/>
-				<FormControl
-					ref={inputDueBy}
-					placeholder='Task'
-					aria-label='Due By '
-					aria-describedby='basic-addon2'
-					autoFocus={false}
-				/>
 				<InputGroup.Append>
 					<Button variant='outline-secondary' onClick={setAsCurrentTask}>
 						Begin
@@ -154,6 +146,7 @@ function ToDo() {
 					</Button>
 				</InputGroup.Append>
 			</InputGroup>
+
 			<p></p>
 
 			{todoListReadyToRender === 'yes' && (
@@ -166,7 +159,7 @@ function ToDo() {
 				autoHideDuration={5000}
 			>
 				<Alert onClose={handleCloseCurrentTaskWarning} severity='error'>
-					Please deselect current task first!
+					Please return current task to the scheduled list first!
 				</Alert>
 			</Snackbar>
 			<Snackbar
@@ -176,7 +169,7 @@ function ToDo() {
 				autoHideDuration={5000}
 			>
 				<Alert onClose={handleCloseBlankFormWarning} severity='warning'>
-					Please add a task!
+					Please enter a task first!
 				</Alert>
 			</Snackbar>
 		</div>

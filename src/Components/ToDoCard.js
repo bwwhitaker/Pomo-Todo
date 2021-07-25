@@ -17,6 +17,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
 
 function ToDoCard({ todo }) {
 	function cleanDueDate(date) {
@@ -38,9 +40,10 @@ function ToDoCard({ todo }) {
 	const [state, setState] = useState({
 		openOverwriteCurrentTaskWarning: false,
 		openDeleteDialog: false,
+		openEditDialog: false,
 	});
 
-	const { openOverwriteCurrentTaskWarning, openDeleteDialog } = state;
+	const { openOverwriteCurrentTaskWarning, openDeleteDialog, openEditDialog } = state;
 
 	function Alert(props) {
 		return <MuiAlert elevation={6} variant='filled' {...props} />;
@@ -58,6 +61,52 @@ function ToDoCard({ todo }) {
 		setState({ ...state, openDeleteDialog: true });
 	};
 
+	const handleOpenEditDialog = (
+		taskIdentifier,
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy,
+		taskOrder,
+		taskNotes
+	) => {
+		setState({ ...state, openEditDialog: true });
+		TaskStore.update((s) => {
+			s.currentSelectedToDeleteTask = '';
+		});
+		TaskStore.update((s) => {
+			s.taskToBeEditedIdentifier = taskIdentifier;
+		});
+		const taskToBeEdited = {
+			todo: taskName,
+			createdOn: taskCreatedOn,
+			category: taskCategory,
+			status: 'scheduled',
+			dueBy: taskDueBy,
+			order: taskOrder,
+			notes: taskNotes,
+		};
+		console.log(taskToBeEdited);
+		TaskStore.update((s) => {
+			s.taskDetailsForEditing = taskToBeEdited;
+		});
+	};
+
+	const dateValue = new Date();
+	const Hours = dateValue.getHours();
+	const Minutes = dateValue.getMinutes();
+	const Year = dateValue.getFullYear();
+	const Month = dateValue.getMonth() + 1;
+	const Day = dateValue.getDay();
+	var defaultDateValue = '';
+	defaultDateValue += Year;
+	defaultDateValue += (Month < 10 ? '-0' : '-') + Month;
+	defaultDateValue += (Day < 10 ? '-0' : '-') + Day;
+	defaultDateValue += (Hours < 10 ? 'T0' : 'T') + Hours;
+	defaultDateValue += (Minutes < 10 ? ':0' : ':') + Minutes;
+
+	const idToBeModified = TaskStore.useState((s) => s.taskToBeEditedIdentifier);
+
 	const handleConfirmCloseDeleteDialog = () => {
 		const taskIdentifier = selectedTaskToBeDeleted;
 		console.log(taskIdentifier);
@@ -68,6 +117,12 @@ function ToDoCard({ todo }) {
 		TaskStore.update((s) => {
 			s.currentSelectedToDeleteTask = '';
 		});
+	};
+	const handleCancelCloseEditDialog = () => {
+		setState({ ...state, openEditDialog: false });
+	};
+	const handleUpdateCloseEditDialog = () => {
+		setState({ ...state, openEditDialog: false });
 	};
 
 	function cleanCategory(category) {
@@ -115,7 +170,15 @@ function ToDoCard({ todo }) {
 		setState({ ...state, openDeleteDialog: false });
 	}
 
-	function setScheduledTaskAsCurrentTask(taskIdentifier, taskName, taskCreatedOn, taskCategory, taskDueBy, taskOrder) {
+	function setScheduledTaskAsCurrentTask(
+		taskIdentifier,
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy,
+		taskOrder,
+		taskNotes
+	) {
 		const isThereCurrentTask = JSON.parse(localStorage.getItem('currentTask'));
 		if (isThereCurrentTask !== '') {
 			setState({ openOverwriteCurrentTaskWarning: true, ...setState });
@@ -139,7 +202,7 @@ function ToDoCard({ todo }) {
 				status: 'current',
 				dueBy: taskDueBy,
 				order: taskOrder,
-				notes: '',
+				notes: taskNotes,
 			};
 			console.log(activeTask);
 			TaskStore.update((s) => {
@@ -157,7 +220,15 @@ function ToDoCard({ todo }) {
 
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
 
-	function completeScheduledTaask(taskIdentifier, taskName, taskCreatedOn, taskCategory, taskDueBy, taskOrder) {
+	function completeScheduledTask(
+		taskIdentifier,
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy,
+		taskOrder,
+		taskNotes
+	) {
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
 			return task.createdOn === taskIdentifier;
@@ -183,7 +254,7 @@ function ToDoCard({ todo }) {
 			category: taskCategory,
 			order: taskOrder,
 			dueBy: taskDueBy,
-			notes: '',
+			notes: taskNotes,
 		});
 		console.log(updateCompletedTodos);
 		console.log(completedList);
@@ -201,6 +272,8 @@ function ToDoCard({ todo }) {
 
 	var displayCategory = cleanCategory(todo.category);
 
+	var taskToBeEdited = TaskStore.useState((s) => s.taskDetailsForEditing);
+
 	return (
 		<div>
 			<div class='card bg-c-yellow '>
@@ -215,54 +288,56 @@ function ToDoCard({ todo }) {
 							<Col>
 								<span className='f-right'>
 									<ButtonGroup>
-										<Button variant='dark'>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Select'
-												aria-label='Select'
-												icon={faLaptopCode}
-												onClick={() =>
-													setScheduledTaskAsCurrentTask(
-														todo.createdOn,
-														todo.todo,
-														todo.createdOn,
-														todo.category,
-														todo.dueBy,
-														todo.order
-													)
-												}
-											/>
+										<Button
+											variant='dark'
+											onClick={() =>
+												setScheduledTaskAsCurrentTask(
+													todo.createdOn,
+													todo.todo,
+													todo.createdOn,
+													todo.category,
+													todo.dueBy,
+													todo.order,
+													todo.notes
+												)
+											}
+										>
+											<FontAwesomeIcon className='icon' alt='Select' aria-label='Select' icon={faLaptopCode} />
 										</Button>
-										<Button variant='dark'>
+										<Button
+											variant='dark'
+											onClick={() =>
+												handleOpenEditDialog(
+													todo.createdOn,
+													todo.todo,
+													todo.createdOn,
+													todo.category,
+													todo.dueBy,
+													todo.order,
+													todo.notes
+												)
+											}
+										>
 											<FontAwesomeIcon className='icon' alt='Edit' aria-label='Edit' icon={faPencilAlt} />
 										</Button>
-										<Button variant='dark'>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Complete'
-												aria-label='Complete'
-												icon={faCheckSquare}
-												onClick={() =>
-													completeScheduledTaask(
-														todo.createdOn,
-														todo.todo,
-														todo.createdOn,
-														todo.category,
-														todo.dueBy,
-														todo.order
-													)
-												}
-											/>
+										<Button
+											variant='dark'
+											onClick={() =>
+												completeScheduledTask(
+													todo.createdOn,
+													todo.todo,
+													todo.createdOn,
+													todo.category,
+													todo.dueBy,
+													todo.order,
+													todo.notes
+												)
+											}
+										>
+											<FontAwesomeIcon className='icon' alt='Complete' aria-label='Complete' icon={faCheckSquare} />
 										</Button>
-										<Button variant='dark'>
-											<FontAwesomeIcon
-												className='icon'
-												alt='Delete'
-												aria-label='Delete'
-												onClick={() => handleOpenDeleteDialog(todo.createdOn)}
-												icon={faTrashAlt}
-												//onClick={() => removeTask(todo.createdOn)}
-											/>
+										<Button variant='dark' onClick={() => handleOpenDeleteDialog(todo.createdOn)}>
+											<FontAwesomeIcon className='icon' alt='Delete' aria-label='Delete' icon={faTrashAlt} />
 										</Button>
 									</ButtonGroup>
 								</span>
@@ -288,7 +363,7 @@ function ToDoCard({ todo }) {
 				autoHideDuration={5000}
 			>
 				<Alert onClose={handleCloseCurrentTaskWarning} severity='error'>
-					Please deselect current task first.
+					Please return current task to the scheduled list first!
 				</Alert>
 			</Snackbar>
 			<Dialog
@@ -309,6 +384,48 @@ function ToDoCard({ todo }) {
 					</Button>
 					<Button onClick={handleConfirmCloseDeleteDialog} color='primary' autoFocus>
 						Confirm
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openEditDialog}
+				onClose={handleCancelCloseEditDialog}
+				aria-labelledby='alert-dialog-title'
+				aria-describedby='alert-dialog-description'
+				disableBackdropClick={true}
+			>
+				<DialogTitle id='alert-dialog-title'>Edit Task</DialogTitle>
+				<DialogContent dividers>
+					<TextField id='standard-text-area' label='Todo' defaultValue={taskToBeEdited.todo} fullWidth multiline />
+					<Divider />
+					<TextField
+						id='datetime-local'
+						type='datetime-local'
+						label='Due By'
+						defaultValue={defaultDateValue}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						fullWidth
+					/>
+					<Divider />
+					<TextField
+						id='standard-textarea'
+						label='Notes'
+						defaultValue={taskToBeEdited.notes}
+						multiline
+						autoFocus
+						fullWidth
+					/>
+					<Divider />
+					<TextField id='standard-basic' label='Category' defaultValue={taskToBeEdited.category} fullWidth />
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleCancelCloseEditDialog} color='primary'>
+						Cancel
+					</Button>
+					<Button onClick={handleUpdateCloseEditDialog} color='primary'>
+						Update
 					</Button>
 				</DialogActions>
 			</Dialog>
