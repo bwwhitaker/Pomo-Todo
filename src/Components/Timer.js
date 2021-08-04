@@ -114,7 +114,7 @@ function Timer() {
 	});
 
 	return (
-		<div>
+		<div className='inputs'>
 			<InputGroup>
 				<InputGroup.Prepend>
 					<Button aria-label='work' onClick={timerStartWork} variant='success' sz='sm'>

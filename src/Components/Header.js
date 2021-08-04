@@ -12,6 +12,7 @@ function Header() {
 	return (
 		<Navbar sticky='top' fixed='top' bg='dark' variant='dark' expand='sm' className='bar center'>
 			<Navbar.Brand>Todos</Navbar.Brand>
+
 			<Navbar.Toggle aria-controls='basic-navbar-nav'>
 				<FontAwesomeIcon alt='Expand' aria-label='Exapand Menu' icon={faBars} className='fa-sm' />
 			</Navbar.Toggle>

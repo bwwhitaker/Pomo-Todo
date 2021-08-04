@@ -4,11 +4,10 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
-import ToDoCard from './ToDoCard';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-function ToDo() {
+function ToDoForm() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
 	const tasksToDo = JSON.parse(TaskStore.useState((s) => s.todoList));
 	const showCurrent = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
@@ -128,7 +127,7 @@ function ToDo() {
 	}
 
 	return (
-		<div>
+		<div className='inputs'>
 			<InputGroup>
 				<FormControl
 					ref={inputTodo}
@@ -147,11 +146,6 @@ function ToDo() {
 				</InputGroup.Append>
 			</InputGroup>
 
-			<p></p>
-
-			{todoListReadyToRender === 'yes' && (
-				<div key='toDoList'>{tasksToDo.length >= 1 && tasksToDo.map((todo) => <ToDoCard todo={todo} />)}</div>
-			)}
 			<Snackbar
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={openOverwriteCurrentTaskWarning}
@@ -176,4 +170,4 @@ function ToDo() {
 	);
 }
 
-export default ToDo;
+export default ToDoForm;

@@ -12,4 +12,5 @@ export const TaskStore = new Store({
 	taskToBeDeletedIdentifier: '',
 	taskToBeEditedIdentifier: '',
 	taskDetailsForEditing: {},
+	deletedList: localStorage.getItem('deletedList'),
 });

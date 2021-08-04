@@ -15,6 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ToDoCard from './ToDoCard';
 
 function DisplayCurrentTask() {
 	const [state, setState] = useState({
@@ -83,15 +84,34 @@ function DisplayCurrentTask() {
 	}
 
 	const currentTask = JSON.parse(TaskStore.useState((s) => s.currentTask));
-
 	const showCurrentTask = JSON.parse(TaskStore.useState((s) => s.showCurrentTask));
-
 	const todoList = JSON.parse(TaskStore.useState((s) => s.todoList));
 	const completedList = JSON.parse(TaskStore.useState((s) => s.completedList));
-
 	const completedTaskCount = TaskStore.useState((s) => s.completedTaskCount);
+	const deletedList = JSON.parse(TaskStore.useState((s) => s.deletedList));
 
 	function deleteCurrentTask() {
+		var deletedOn = new Date().toISOString();
+		console.log('deleting todo');
+		console.log(currentTask);
+		const updateTodoList = {
+			todo: currentTask.todo,
+			createdOn: currentTask.createdOn,
+			status: 'deleted',
+			category: currentTask.category,
+			order: currentTask.order,
+			dueBy: currentTask.dueBy,
+			notes: currentTask.notes,
+			deletedOn: deletedOn,
+		};
+		const updatedTodos = deletedList.push(updateTodoList);
+		//Length of New Items List
+		console.log(updatedTodos);
+		console.log(deletedList);
+		localStorage.setItem('deletedList', JSON.stringify(deletedList));
+		TaskStore.update((s) => {
+			s.deletedList = JSON.stringify(deletedList);
+		});
 		var resetTask = '';
 		localStorage.setItem('currentTask', JSON.stringify(resetTask));
 		//setCurrentTask('Pick a new task.');
@@ -126,7 +146,16 @@ function DisplayCurrentTask() {
 		TaskStore.update((s) => {
 			s.completedList = JSON.stringify(completedList);
 		});
-		deleteCurrentTask();
+		var resetTask = '';
+		localStorage.setItem('currentTask', JSON.stringify(resetTask));
+		//setCurrentTask('Pick a new task.');
+		TaskStore.update((s) => {
+			s.showCurrentTask = JSON.stringify('none');
+		});
+		TaskStore.update((s) => {
+			s.currentTask = JSON.stringify(resetTask);
+		});
+		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 		localStorage.setItem('completedTaskCount', newTaskCount);
 	}
 
@@ -150,7 +179,16 @@ function DisplayCurrentTask() {
 		TaskStore.update((s) => {
 			s.todoList = JSON.stringify(todoList);
 		});
-		deleteCurrentTask();
+		var resetTask = '';
+		localStorage.setItem('currentTask', JSON.stringify(resetTask));
+		//setCurrentTask('Pick a new task.');
+		TaskStore.update((s) => {
+			s.showCurrentTask = JSON.stringify('none');
+		});
+		TaskStore.update((s) => {
+			s.currentTask = JSON.stringify(resetTask);
+		});
+		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 	}
 
 	var todo = JSON.parse(TaskStore.useState((s) => s.currentTask));
@@ -165,7 +203,7 @@ function DisplayCurrentTask() {
 		<div>
 			{showCurrentTask === 'block' && (
 				<div style={{ display: showCurrentTask }}>
-					<div class='card bg-c-green '>
+					<div className='card bg-c-green '>
 						<div>
 							<Card.Body>
 								<Row>
@@ -230,6 +268,7 @@ function DisplayCurrentTask() {
 							</Card.Body>
 						</div>
 					</div>
+					<ToDoCard todo={todo} />
 				</div>
 			)}
 

@@ -35,7 +35,8 @@ function ToDoCard({ todo }) {
 		}
 	}
 
-	const selectedTaskToBeDeleted = TaskStore.useState((s) => s.taskToBeDeletedIdentifier);
+	const selectedTaskToBeDeleted = TaskStore.useState((s) => s.taskToBeDeleted);
+	const deletedList = JSON.parse(TaskStore.useState((s) => s.deletedList));
 
 	const [state, setState] = useState({
 		openOverwriteCurrentTaskWarning: false,
@@ -53,11 +54,29 @@ function ToDoCard({ todo }) {
 		setState({ ...state, openOverwriteCurrentTaskWarning: false });
 	};
 
-	const handleOpenDeleteDialog = (taskIdentifier) => {
+	const handleOpenDeleteDialog = (
+		taskIdentifier,
+		taskName,
+		taskCreatedOn,
+		taskCategory,
+		taskDueBy,
+		taskOrder,
+		taskNotes
+	) => {
+		const taskToBeDeleted = {
+			taskIdentifier: taskIdentifier,
+			todo: taskName,
+			createdOn: taskCreatedOn,
+			category: taskCategory,
+			dueBy: taskDueBy,
+			order: taskOrder,
+			notes: taskNotes,
+		};
 		TaskStore.update((s) => {
-			s.taskToBeDeletedIdentifier = taskIdentifier;
+			s.taskToBeDeleted = taskToBeDeleted;
 		});
-		console.log(taskIdentifier);
+
+		console.log(taskToBeDeleted);
 		setState({ ...state, openDeleteDialog: true });
 	};
 
@@ -72,7 +91,7 @@ function ToDoCard({ todo }) {
 	) => {
 		setState({ ...state, openEditDialog: true });
 		TaskStore.update((s) => {
-			s.currentSelectedToDeleteTask = '';
+			s.currentSelectedToEditTask = '';
 		});
 		TaskStore.update((s) => {
 			s.taskToBeEditedIdentifier = taskIdentifier;
@@ -93,19 +112,17 @@ function ToDoCard({ todo }) {
 	};
 
 	const dateValue = new Date();
-	const Hours = dateValue.getHours();
+	const Hours = dateValue.getHours() + 1;
 	const Minutes = dateValue.getMinutes();
 	const Year = dateValue.getFullYear();
 	const Month = dateValue.getMonth() + 1;
-	const Day = dateValue.getDay();
+	const Day = dateValue.getDate();
 	var defaultDateValue = '';
 	defaultDateValue += Year;
 	defaultDateValue += (Month < 10 ? '-0' : '-') + Month;
 	defaultDateValue += (Day < 10 ? '-0' : '-') + Day;
 	defaultDateValue += (Hours < 10 ? 'T0' : 'T') + Hours;
 	defaultDateValue += (Minutes < 10 ? ':0' : ':') + Minutes;
-
-	const idToBeModified = TaskStore.useState((s) => s.taskToBeEditedIdentifier);
 
 	const handleConfirmCloseDeleteDialog = () => {
 		const taskIdentifier = selectedTaskToBeDeleted;
@@ -115,7 +132,7 @@ function ToDoCard({ todo }) {
 	const handleCancelCloseDeleteDialog = () => {
 		setState({ ...state, openDeleteDialog: false });
 		TaskStore.update((s) => {
-			s.currentSelectedToDeleteTask = '';
+			s.taskToBeDeleted = {};
 		});
 	};
 	const handleCancelCloseEditDialog = () => {
@@ -154,11 +171,12 @@ function ToDoCard({ todo }) {
 	}
 
 	function removeTask() {
+		var deletedOn = new Date().toISOString();
 		const selectedTaskToBeDeletedIs = selectedTaskToBeDeleted;
 		console.log(selectedTaskToBeDeletedIs);
 		var newTaskList = JSON.parse(localStorage.getItem('todoList'));
 		var keyOfTask = newTaskList.findIndex(function (task) {
-			return task.createdOn === selectedTaskToBeDeletedIs;
+			return task.createdOn === selectedTaskToBeDeletedIs.taskIdentifier;
 		});
 		if (keyOfTask > -1) {
 			newTaskList.splice(keyOfTask, 1);
@@ -167,6 +185,34 @@ function ToDoCard({ todo }) {
 			s.todoList = JSON.stringify(newTaskList);
 		});
 		localStorage.setItem('todoList', JSON.stringify(newTaskList));
+		const updateTodoList = {
+			todo: selectedTaskToBeDeletedIs.todo,
+			createdOn: selectedTaskToBeDeletedIs.createdOn,
+			status: 'deleted',
+			category: selectedTaskToBeDeletedIs.category,
+			order: selectedTaskToBeDeletedIs.order,
+			dueBy: selectedTaskToBeDeletedIs.dueBy,
+			notes: selectedTaskToBeDeletedIs.notes,
+			deletedOn: deletedOn,
+		};
+		const updatedTodos = deletedList.push(updateTodoList);
+		//Length of New Items List
+		console.log(updatedTodos);
+		console.log(deletedList);
+		localStorage.setItem('deletedList', JSON.stringify(deletedList));
+		TaskStore.update((s) => {
+			s.deletedList = JSON.stringify(deletedList);
+		});
+		var resetTask = '';
+		localStorage.setItem('currentTask', JSON.stringify(resetTask));
+		//setCurrentTask('Pick a new task.');
+		TaskStore.update((s) => {
+			s.showCurrentTask = JSON.stringify('none');
+		});
+		TaskStore.update((s) => {
+			s.currentTask = JSON.stringify(resetTask);
+		});
+		localStorage.setItem('showCurrentTask', JSON.stringify('none'));
 		setState({ ...state, openDeleteDialog: false });
 	}
 
@@ -274,9 +320,18 @@ function ToDoCard({ todo }) {
 
 	var taskToBeEdited = TaskStore.useState((s) => s.taskDetailsForEditing);
 
+	function determineCardColor(status) {
+		if (status === 'current') {
+			return 'card bg-c-green';
+		}
+		if (status === 'scheduled') {
+			return 'card bg-c-blue';
+		}
+	}
+
 	return (
 		<div>
-			<div class='card bg-c-yellow '>
+			<div className={determineCardColor(todo.status)}>
 				<div>
 					<Card.Body>
 						<Row>
@@ -336,7 +391,20 @@ function ToDoCard({ todo }) {
 										>
 											<FontAwesomeIcon className='icon' alt='Complete' aria-label='Complete' icon={faCheckSquare} />
 										</Button>
-										<Button variant='dark' onClick={() => handleOpenDeleteDialog(todo.createdOn)}>
+										<Button
+											variant='dark'
+											onClick={() =>
+												handleOpenDeleteDialog(
+													todo.createdOn,
+													todo.todo,
+													todo.createdOn,
+													todo.category,
+													todo.dueBy,
+													todo.order,
+													todo.notes
+												)
+											}
+										>
 											<FontAwesomeIcon className='icon' alt='Delete' aria-label='Delete' icon={faTrashAlt} />
 										</Button>
 									</ButtonGroup>

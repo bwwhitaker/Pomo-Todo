@@ -1,11 +1,13 @@
 import React from 'react';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import '../App.css';
 
 function Footer() {
 	return (
-		<div>
-			<p className="right">Pomo-Todo v0.1</p>
-		</div>
+		<Navbar bg='dark' variant='dark' className='justify-content-end' fixed='bottom' sticky='bottom'>
+			<Nav className='footer'>Pomo-Todo v0.1</Nav>
+		</Navbar>
 	);
 }
 
