@@ -23,7 +23,7 @@ function GetTime() {
 
 	return (
 		<div>
-			<p className="left">{time}</p>
+			<p className='left'>{time}</p>
 		</div>
 	);
 }

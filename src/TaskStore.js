@@ -9,4 +9,8 @@ export const TaskStore = new Store({
 	completedList: localStorage.getItem('completedList'),
 	timerEndTime: 0,
 	timerValue: 0,
+	taskToBeDeletedIdentifier: '',
+	taskToBeEditedIdentifier: '',
+	taskDetailsForEditing: {},
+	deletedList: localStorage.getItem('deletedList'),
 });

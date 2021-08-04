@@ -1,13 +1,13 @@
 .App {
 	text-align: center;
 	background-color: #282c34;
-	min-height: 100vh;
+	min-height: 91vh;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	font-size: calc(10px + 1vmin);
 	color: white;
-	padding-top: 5vh;
+	padding-top: 2vh;
 	padding-left: 5vmin;
 	padding-right: 5vmin;
 }
@@ -31,4 +31,26 @@
 .card {
 	background-color: #282c34;
 	color: black;
+}
+
+.bar {
+	padding-bottom: 1px !important;
+}
+
+.inputs {
+	margin-bottom: 1vh !important;
+}
+
+.box {
+	overflow: auto;
+	min-height: 50vh;
+	max-height: 70vh;
+}
+
+.mainbox {
+	overflow-y: scroll;
+}
+
+.footer {
+	color: rgb(92, 91, 91);
 }
