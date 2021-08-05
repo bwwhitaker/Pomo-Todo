@@ -54,3 +54,10 @@
 .footer {
 	color: rgb(92, 91, 91);
 }
+
+.sizedown {
+	-webkit-transform: scale(0.5);
+	-moz-transform: scale(0.5);
+	-ms-transform: scale(0.5);
+	transform: scale(0.5);
+}
