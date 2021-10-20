@@ -10,7 +10,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
 	return (
-		<Navbar sticky='top' fixed='top' bg='dark' variant='dark' expand='sm' className='bar center'>
+		<Navbar fixed='top' sticky='top' bg='dark' variant='dark' expand='sm' className='bar center'>
 			<Navbar.Brand>Todos</Navbar.Brand>
 
 			<Navbar.Toggle aria-controls='basic-navbar-nav'>
