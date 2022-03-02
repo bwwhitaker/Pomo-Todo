@@ -6,7 +6,7 @@ import Card from 'react-bootstrap/Card';
 import '../App.css';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import './Card.css';
+import './TodoCard/Card.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faPencilAlt, faCalendarMinus, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,7 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import ToDoCard from './ToDoCard';
+import ToDoCard from './TodoCard/ToDoCard';
 
 function DisplayCurrentTask() {
 	const [state, setState] = useState({
@@ -203,7 +203,7 @@ function DisplayCurrentTask() {
 		<div>
 			{showCurrentTask === 'block' && (
 				<div style={{ display: showCurrentTask }}>
-					<div className='card bg-c-green '>
+					{/* <div className='card bg-c-green '>
 						<div>
 							<Card.Body>
 								<Row>
@@ -267,7 +267,7 @@ function DisplayCurrentTask() {
 								</Row>
 							</Card.Body>
 						</div>
-					</div>
+					</div> */}
 					<ToDoCard todo={todo} />
 				</div>
 			)}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
-import ToDoCard from './ToDoCard';
+import ToDoCard from './TodoCard/ToDoCard';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -88,7 +88,7 @@ function DisplayToDoList() {
 				autoHideDuration={5000}
 			>
 				<Alert onClose={handleCloseCurrentTaskWarning} severity='error'>
-					Please return current task to the scheduled list first! hi
+					Please return current task to the scheduled list first!
 				</Alert>
 			</Snackbar>
 			<Snackbar

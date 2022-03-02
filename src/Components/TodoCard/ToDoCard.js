@@ -3,13 +3,12 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import '../App.css';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import './Card.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faLaptopCode, faPencilAlt, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
-import { TaskStore } from '../TaskStore';
+import { TaskStore } from '../../TaskStore';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Dialog from '@material-ui/core/Dialog';
@@ -19,6 +18,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
+import ScheduleChangeButton from './ScheduleChangeButton';
 
 function ToDoCard({ todo }) {
 	function cleanDueDate(date) {
@@ -343,6 +343,7 @@ function ToDoCard({ todo }) {
 							<Col>
 								<span className='f-right'>
 									<ButtonGroup>
+										<ScheduleChangeButton status={todo.status} />
 										<Button
 											variant='dark'
 											onClick={() =>
