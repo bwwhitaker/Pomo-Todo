@@ -20,7 +20,7 @@ export default function ScheduleChangeButton({ status }) {
 					) */
 			}
 		>
-			{status} <FontAwesomeIcon className='icon' alt='Select' aria-label='Select' icon={faLaptopCode} />
+			<FontAwesomeIcon className='icon' alt='Select' aria-label='Select' icon={faLaptopCode} />
 		</Button>
 	) : (
 		<Button
@@ -38,7 +38,6 @@ export default function ScheduleChangeButton({ status }) {
 					) */
 			}
 		>
-			{status}
 			<FontAwesomeIcon className='icon' alt='Select' aria-label='Select' icon={faCalendarMinus} />
 		</Button>
 	);

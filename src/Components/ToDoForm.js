@@ -6,6 +6,7 @@ import '../App.css';
 import { TaskStore } from '../TaskStore';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { v4 as uuidv4 } from 'uuid';
 
 function ToDoForm() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
@@ -81,6 +82,7 @@ function ToDoForm() {
 					notes: '',
 					dueBy: '',
 					order: '',
+					id: uuidv4(),
 				};
 				TaskStore.update((s) => {
 					s.currentTask = JSON.stringify(enteredTask);
@@ -113,6 +115,7 @@ function ToDoForm() {
 				order: 0,
 				dueBy: '',
 				notes: '',
+				id: uuidv4(),
 			};
 			const newItems = tasksToDo.push(newItem);
 			//Length of New Items List
