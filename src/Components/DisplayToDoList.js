@@ -79,7 +79,7 @@ function DisplayToDoList() {
 		<div>
 			<div className='box'>
 				{todoListReadyToRender === 'yes' && (
-					<div key='toDoList'>{tasksToDo.length >= 1 && tasksToDo.map((todo) => <ToDoCard todo={todo} />)}</div>
+					<div>{tasksToDo.length >= 1 && tasksToDo.map((todo) => <ToDoCard todo={todo} key={todo.id} />)}</div>
 				)}
 			</div>
 			<Snackbar
