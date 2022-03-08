@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { TaskStore } from '../TaskStore';
-import ToDoCard from './ToDoCard';
+import ToDoCard from './TodoCard/ToDoCard';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { v4 as uuidv4 } from 'uuid';
 
 function DisplayToDoList() {
 	const todoListReadyToRender = JSON.parse(TaskStore.useState((s) => s.todoListReady));
@@ -78,7 +79,7 @@ function DisplayToDoList() {
 		<div>
 			<div className='box'>
 				{todoListReadyToRender === 'yes' && (
-					<div key='toDoList'>{tasksToDo.length >= 1 && tasksToDo.map((todo) => <ToDoCard todo={todo} />)}</div>
+					<div>{tasksToDo.length >= 1 && tasksToDo.map((todo) => <ToDoCard todo={todo} key={todo.id} />)}</div>
 				)}
 			</div>
 			<Snackbar
@@ -88,7 +89,7 @@ function DisplayToDoList() {
 				autoHideDuration={5000}
 			>
 				<Alert onClose={handleCloseCurrentTaskWarning} severity='error'>
-					Please return current task to the scheduled list first! hi
+					Please return current task to the scheduled list first!
 				</Alert>
 			</Snackbar>
 			<Snackbar

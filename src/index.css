@@ -3,7 +3,8 @@ body {
 		'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	overflow: hidden;
+	overscroll-behavior: none;
+	margin-top: 0 !important;
 }
 
 code {

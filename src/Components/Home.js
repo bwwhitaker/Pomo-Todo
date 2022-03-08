@@ -10,7 +10,7 @@ import Row from 'react-bootstrap/Row';
 
 function Home() {
 	return (
-		<div className='App '>
+		<div className='App'>
 			<Row>
 				<Col sm={12} md={6}>
 					<ToDoForm />

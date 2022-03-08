@@ -5,9 +5,15 @@ import '../App.css';
 
 function Footer() {
 	return (
-		<Navbar bg='dark' variant='dark' className='justify-content-end' fixed='bottom' sticky='bottom'>
-			<Nav className='footer'>Pomo-Todo v0.1</Nav>
-		</Navbar>
+		<div>
+			<Navbar bg='dark' variant='dark' fixed='bottom' sticky='bottom' className='footer'>
+				<Nav></Nav>
+
+				<Navbar.Collapse className='justify-content-end'>
+					<Nav>Pomo-Todo v0.1</Nav>
+				</Navbar.Collapse>
+			</Navbar>
+		</div>
 	);
 }
 
